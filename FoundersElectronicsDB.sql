@@ -1,4 +1,3 @@
-drop table if exists FoundersElectronics.Customer
 drop table if exists FoundersElectronics.SpecialOrder
 drop table if exists FoundersElectronics.Supplier
 drop table if exists FoundersElectronics.Store
@@ -30,5 +29,13 @@ CREATE TABLE FoundersElectronics.Customer
 	CustomerName NVARCHAR(64) NOT NULL unique,
 	Street NVARCHAR(64) NOT NULL unique,
 	City NVARCHAR(64) NOT NULL unique,
-	State NVARCHAR(64) NOT NULL unique
+	State NVARCHAR(64) NOT NULL unique	
+);
+
+CREATE TABLE FoundersElectronics.Employee
+(
+	EmployeeID INT Primary Key,
+	EmployeeName NVARCHAR(64) NOT NULL unique,
+	DateTimeOffset SYSDATETIMEOFFSET( ) AS StartDate,	
+	StoreID INT foreign Key
 );
