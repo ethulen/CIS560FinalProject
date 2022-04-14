@@ -1,3 +1,8 @@
+drop table if exists FoundersElectronics.Order
+drop table if exists FoundersElectronics.OrderItemized
+drop table if exists FoundersElectronics.Product
+drop table if exists FoundersElectronics.Employee
+drop table if exists FoundersElectronics.Customer
 drop table if exists FoundersElectronics.SpecialOrder
 drop table if exists FoundersElectronics.Supplier
 drop table if exists FoundersElectronics.Store
