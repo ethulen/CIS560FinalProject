@@ -893,3 +893,21 @@ VALUES
   (819,98,'Sep 28, 2018',10097,98,98),
   (270,99,'May 19, 2022',10098,99,99),
   (689,100,'Sep 4, 2019',10099,100,100);
+
+--Store Queries--
+Select *
+From FoundersElectronics.Store S
+Order by S.StoreID
+
+--Supplier Queries--
+Select *
+From FoundersElectronics.Supplier S
+Order by S.SupplierID
+
+--Employee Queries--
+Insert into FoundersElectronics.Employee(EmployeeID, EmployeeName, StartDate, StoreID)
+Values(10101, 'Rachel Peterson', '03-06-2021', 101);
+
+UPDATE FoundersElectronics.Employee
+SET EmployeeID = 'Alfred Schmidt'
+WHERE EmployeeId = 101;
