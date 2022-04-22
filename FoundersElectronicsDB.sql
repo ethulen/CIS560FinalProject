@@ -909,5 +909,127 @@ Insert into FoundersElectronics.Employee(EmployeeID, EmployeeName, StartDate, St
 Values(10101, 'Rachel Peterson', '03-06-2021', 101);
 
 UPDATE FoundersElectronics.Employee
-SET EmployeeID = 'Alfred Schmidt'
+SET EmployeeName = 'Alfred Schmidt'
 WHERE EmployeeId = 101;
+GO
+
+ALTER TABLE FoundersElectronics.Employee
+ADD IsDeleted BIT NOT NULL DEFAULT 0;
+GO
+
+CREATE TRIGGER SoftDelete_Employees ON FoundersElectronics.Employee
+  INSTEAD OF DELETE AS
+SET NOCOUNT ON;
+UPDATE FoundersElectronics.Employee
+  SET IsDeleted = 1
+  WHERE FoundersElectronics.Employee.EmployeeID IN (SELECT EmployeeID FROM deleted);
+GO
+
+Delete FoundersElectronics.Employee where EmployeeID = 101
+select * from FoundersElectronics.Employee where EmployeeID = 101
+
+
+select *
+from FoundersElectronics.Employee E
+where E.EmployeeName = 'Raphael Morgan'
+
+--Product Queries--
+Insert into FoundersElectronics.Product(ProductID, ProductName,	ItemCost, SupplierID)
+Values(101, 'Toaster', '$278.09', 100);
+
+UPDATE FoundersElectronics.Product
+SET ItemCost = '$249.99'
+WHERE ItemCost = '$278.09';
+
+select *
+from FoundersElectronics.Product P
+where P.ProductName = 'Vacuum'
+
+--Purchase Queries--
+Insert into FoundersElectronics.Purchase(PurchaseID,OrderItemID,OrderDate,EmployeeID, CustomerID,SpecialID)
+Values(157,4,'Jan 20, 2021',10101,27,56);
+
+UPDATE FoundersElectronics.Purchase
+SET OrderItemID = 34
+WHERE PurchaseID = 157;
+
+ALTER TABLE FoundersElectronics.Purchase
+ADD IsDeleted BIT NOT NULL DEFAULT 0;
+GO
+
+CREATE OR ALTER TRIGGER SoftDelete_Purchase ON FoundersElectronics.Purchase
+  INSTEAD OF DELETE AS
+SET NOCOUNT ON;
+UPDATE FoundersElectronics.Purchase
+  SET IsDeleted = 1
+  WHERE FoundersElectronics.Purchase.EmployeeID IN (SELECT EmployeeID FROM deleted);
+GO
+Delete FoundersElectronics.Purchase where EmployeeID = 101
+select * from FoundersElectronics.Purchase where EmployeeID = 101
+
+select *
+from FoundersElectronics.Purchase P
+where P.PurchaseID = 82
+
+--Customer Queries--
+Insert into FoundersElectronics.Customer(CustomerName,CustomerID,Street,City, State)
+Values('Wilbur Robinson',101,'594-8807 Nec, Ave','Athens','Michigan')
+
+UPDATE FoundersElectronics.Customer
+SET Street = '596-8807 Nec, Ave'
+WHERE CustomerId = 101;
+
+ALTER TABLE FoundersElectronics.Customer
+ADD IsDeleted BIT NOT NULL DEFAULT 0;
+GO
+
+CREATE OR ALTER TRIGGER SoftDelete_Customer ON FoundersElectronics.Customer
+  INSTEAD OF DELETE AS
+SET NOCOUNT ON;
+UPDATE FoundersElectronics.Customer
+  SET IsDeleted = 1
+  WHERE FoundersElectronics.Customer.CustomerID IN (SELECT CustomerID FROM deleted);
+GO
+Delete FoundersElectronics.Customer where CustomerID = 101
+select * from FoundersElectronics.Customer where CustomerID = 101
+
+select *
+from FoundersElectronics.Customer C
+where C.CustomerName = 'Steven Pope' 
+
+--Special Order Queries--
+Insert into FoundersElectronics.SpecialOrder(ItemName,SpecialID,ItemCost)
+Values('Clock',101,'$21.86')
+
+UPDATE FoundersElectronics.SpecialOrder
+SET ItemName = 'Laser'
+WHERE SpecialID = 101;
+
+ALTER TABLE FoundersElectronics.SpecialOrder
+ADD IsDeleted BIT NOT NULL DEFAULT 0;
+GO
+
+CREATE OR ALTER TRIGGER SoftDelete_SpecialOrder ON FoundersElectronics.SpecialOrder
+  INSTEAD OF DELETE AS
+SET NOCOUNT ON;
+UPDATE FoundersElectronics.SpecialOrder
+  SET IsDeleted = 1
+  WHERE FoundersElectronics.SpecialOrder.SpecialID IN (SELECT SpecialID FROM deleted);
+GO
+Delete FoundersElectronics.SpecialOrder where SpecialID = 101
+select * from FoundersElectronics.SpecialOrder where SpecialID = 101
+
+select *
+from FoundersElectronics.SpecialOrder S
+where S.SpecialID = 78 
+
+--Order Itemized Queries--
+Insert into FoundersElectronics.OrderItemized(OrderItemID,Quantity,ItemCost,SupplierID)
+Values(101,5,'$8.62',3)
+
+UPDATE FoundersElectronics.OrderItemized
+SET Quantity = 2
+WHERE OrderItemID = 101;
+
+Delete FoundersElectronics.OrderItemized where OrderItemID = 101
+select * from FoundersElectronics.OrderItemized where OrderItemID = 101
