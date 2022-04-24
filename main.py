@@ -1,210 +1,518 @@
-"""
-CIS560 Team 4 - Steven Avila, Ethan Hulen, Zackary Nichol
-Database project
-Foundation Electronics Point Of Sales
-Program author: Zackary Nichol
-"""
-import os
+import tkinter as tk
+from tkinter import font as tkfont
+
+location = "Manhattan"
+
 
 # Program logic
 
+def set_store_location(new_location, controller):
+    global location
+    location = new_location
 
-store_location = "Manhattan"
+    controller.show_frame("MainMenu")
 
-# The most recent menu option key selected
-selected_menu_option_key = ""
-
-
-def clear_console():
-    """
-    Clears the windows console. Does not work in PyCharm console
-    """
-    os.system('cls')
+    print(new_location)
 
 
-def start():
-    """
-    Control logic for the program. Displays user selected menus until the user exits
-    """
-    main_menu_tree = get_main_menu()
-    display_menu_tree(main_menu_tree)
-    active_menu = main_menu_tree
+# GUI logic and control
 
-    global selected_menu_option_key
+class MenuGUI(tk.Tk):
 
-    while True:
-        selected_menu_option_index = get_user_menu_selection(len(active_menu))
+    def __init__(self, *args, **kwargs):
+        tk.Tk.__init__(self, *args, **kwargs)
 
-        selected_menu_option_key = list(active_menu.keys())[selected_menu_option_index]
-        active_menu = list(active_menu.values())[selected_menu_option_index]()
+        self.geometry("800x600")
+        self.title("Foundation Electronics Store")
+        self.title_font = tkfont.Font(family='Helvetica', size=18, weight="bold", slant="italic")
 
-        display_menu_tree(active_menu)
+        # The root container for all menus
+        container = tk.Frame(self)
+        container.pack(fill="both", expand=True)
+        container.grid_rowconfigure(0, weight=1)
+        container.grid_columnconfigure(0, weight=1)
 
+        self.frames = {}
+        for frame in (
+                MainMenu, SystemSettingsMenu, ChangeStoreLocationMenu, OrderFunctionsMenu, FindOrderMenu,
+                CreateOrderMenu, DeleteOrderMenu, UpdateOrderMenu, CustomerFunctionsMenu, FindCustomerMenu,
+                CreateCustomerMenu, DeleteCustomerMenu, UpdateCustomerMenu, EmployeeFunctionsMenu, FindEmployeeMenu,
+                CreateEmployeeMenu, DeleteEmployeeMenu, UpdateEmployeeMenu, InventoryFunctionsMenu, FindProductMenu,
+                CreateProductMenu, UpdateProductMenu
+        ):
 
-def get_user_menu_selection(main_menu_length):
-    while True:
-        user_input = input(">")
-        try:
-            user_input = int(user_input)
-            if user_input <= 0 or user_input > main_menu_length:
-                raise Exception(ValueError)
-            return user_input
-        except Exception:
-            print("Please input a valid int from 1 to " + str(main_menu_length))
+            page_name = frame.__name__
+            frame = frame(parent=container, controller=self)
+            self.frames[page_name] = frame
 
+            frame.grid(row=0, column=0, sticky="nsew")
 
-def set_store_location():
-    new_location = get_store_location(selected_menu_option_key)
+        self.show_frame("MainMenu")
 
-    global store_location
-    store_location = new_location
-
-    return get_system_settings_menu()
-
-
-# Display functions
+    def show_frame(self, page_name):
+        frame = self.frames[page_name]
+        frame.tkraise()
 
 
-def display_menu_tree(menu_tree):
-    clear_console()
-    display_heading()
-
-    for iteration, menu_item in enumerate(menu_tree.keys()):
-        if iteration == 0:
-            print("\n" + str(menu_item))
-            print("~~~~")
-
-        else:
-            print(str(iteration) + ": " + str(menu_item))
-    print("~~~~\n")
+# GUI main menus
 
 
-def display_heading():
-    print("--------------------Foundation Electronics Point Of Sales System--------------------")
-    print("Remember to smile™")
-    print("Store Location: " + store_location)
-    print("Select a menu option below by entering in the corresponding number")
-    print("------------------------------------------------------------------------------------")
+class MainMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="MAIN MENU: Select sub-menu")
+        label2 = tk.Label(self, text="STORE LOCATION: " + location)
+        print("here")
+
+        button1 = tk.Button(self, text="Order Functions",
+                            command=lambda: controller.show_frame("OrderFunctionsMenu"))
+        button2 = tk.Button(self, text="Customer Functions",
+                            command=lambda: controller.show_frame("CustomerFunctionsMenu"))
+        button3 = tk.Button(self, text="Employee Functions",
+                            command=lambda: controller.show_frame("EmployeeFunctionsMenu"))
+        button4 = tk.Button(self, text="Inventory Functions",
+                            command=lambda: controller.show_frame("InventoryFunctionsMenu"))
+        button5 = tk.Button(self, text="System Settings",
+                            command=lambda: controller.show_frame("SystemSettingsMenu"))
+        button6 = tk.Button(self, text="Exit",
+                            command=lambda: controller.destroy())
+
+        label1.pack()
+        label2.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
+        button5.pack()
+        button6.pack()
 
 
-# Get menu functions
+class SystemSettingsMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="SYSTEM SETTINGS MENU: Select sub-menu")
+
+        button1 = tk.Button(self, text="Change Location",
+                            command=lambda: controller.show_frame("ChangeStoreLocationMenu"))
+        button2 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("MainMenu"))
+
+        label1.pack()
+        button1.pack()
+        button2.pack()
 
 
-def get_main_menu():
-    main_menu_tree = {
-        "MAIN MENU: Select sub-menu": 0,
-        "Order Functions": get_order_functions_menu,
-        "Customer Functions": get_customer_functions_menu,
-        "Employee Functions": get_employee_functions_menu,
-        "Inventory Functions": get_inventory_functions_menu,
-        "System Settings": get_system_settings_menu,
-        "Exit": exit
-    }
-    return main_menu_tree
+class OrderFunctionsMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="ORDER FUNCTIONS MENU: Select sub-menu")
+
+        button1 = tk.Button(self, text="Find Order",
+                            command=lambda: controller.show_frame("FindOrderMenu"))
+        button2 = tk.Button(self, text="Create Order",
+                            command=lambda: controller.show_frame("CreateOrderMenu"))
+        button3 = tk.Button(self, text="Delete Order",
+                            command=lambda: controller.show_frame("DeleteOrderMenu"))
+        button4 = tk.Button(self, text="Update Order",
+                            command=lambda: controller.show_frame("UpdateOrderMenu"))
+        button5 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("MainMenu"))
+
+        label1.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
+        button5.pack()
 
 
-def get_system_settings_menu():
-    system_tree = {
-        "SYSTEM SETTINGS MENU: Select sub-menu": 0,
-        "Change Location": get_change_store_location_menu,
-        "Back To Main Menu": get_main_menu
-    }
-    return system_tree
+class CustomerFunctionsMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="CUSTOMER FUNCTIONS MENU: Select sub-menu")
+
+        button1 = tk.Button(self, text="Find Customer Record",
+                            command=lambda: controller.show_frame("FindCustomerMenu"))
+        button2 = tk.Button(self, text="Create Customer Record",
+                            command=lambda: controller.show_frame("CreateCustomerMenu"))
+        button3 = tk.Button(self, text="Delete Customer Record",
+                            command=lambda: controller.show_frame("DeleteCustomerMenu"))
+        button4 = tk.Button(self, text="Update Customer Record",
+                            command=lambda: controller.show_frame("UpdateCustomerMenu"))
+        button5 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("MainMenu"))
+
+        label1.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
+        button5.pack()
 
 
-def get_change_store_location_menu():
-    location_keys = get_all_store_locations()
-    location_tree = {}
-    location_tree.update({"LOCATION SELECTION MENU: Select new location": 0})
+class EmployeeFunctionsMenu(tk.Frame):
 
-    for iteration, location in enumerate(location_keys):
-        location_tree.update({
-            location: set_store_location
-        })
-    location_tree.update({"Exit": get_system_settings_menu})
-    return location_tree
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
 
+        label1 = tk.Label(self, text="EMPLOYEE FUNCTIONS MENU: Select sub-menu")
 
-def get_order_functions_menu():
-    order_tree = {
-        "ORDER FUNCTIONS MENU: Select sub-menu": 0,
-        "Find Order": get_find_order_menu,
-        "Create Order": get_create_order_menu,
-        "Delete Order": get_delete_order_menu,
-        "Exit": get_main_menu
-    }
-    return order_tree
+        button1 = tk.Button(self, text="Find Employee Record",
+                            command=lambda: controller.show_frame("FindEmployeeMenu"))
+        button2 = tk.Button(self, text="Create Employee Record",
+                            command=lambda: controller.show_frame("CreateEmployeeMenu"))
+        button3 = tk.Button(self, text="Delete Employee Record",
+                            command=lambda: controller.show_frame("DeleteEmployeeMenu"))
+        button4 = tk.Button(self, text="Update Employee Record",
+                            command=lambda: controller.show_frame("UpdateEmployeeMenu"))
+        button5 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("MainMenu"))
 
-
-def get_find_order_menu():
-    find_order_tree = {
-        "FIND ORDER MENU: Type in order id to find the associated order": 0,
-        "Exit": get_order_functions_menu
-    }
-    return find_order_tree
+        label1.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
+        button5.pack()
 
 
-def get_create_order_menu():
-    create_tree = {
-        "CREATE ORDER MENU: Type in product name to add to new order": 0,
-        "Exit": get_order_functions_menu
-    }
-    return create_tree
+class InventoryFunctionsMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="INVENTORY FUNCTIONS MENU: Select sub-menu")
+
+        button1 = tk.Button(self, text="Find Product",
+                            command=lambda: controller.show_frame("FindProductMenu"))
+        button2 = tk.Button(self, text="Create Product",
+                            command=lambda: controller.show_frame("CreateProductMenu"))
+        button3 = tk.Button(self, text="Update Product Cost",
+                            command=lambda: controller.show_frame("UpdateProductMenu"))
+        button4 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("MainMenu"))
+
+        label1.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
 
 
-def get_delete_order_menu():
-    delete_tree = {
-        "DELETE ORDER MENU: Enter in order id to delete the associated order": 0,
-        "Exit": get_order_functions_menu
-    }
-    return delete_tree
+# GUI sub-menus
 
 
-def get_customer_functions_menu():
-    customer_tree = {
-        "FIND CUSTOMER MENU: Type in customer name to find all orders associated with them": 0,
-        "Exit": get_order_functions_menu
-    }
-    return customer_tree
+class ChangeStoreLocationMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="LOCATION SELECTION MENU: Select new location")
+        label1.pack()
+
+        location_keys = get_all_store_locations()
+
+        for location in location_keys:
+            location_button = tk.Button(self, text=location,
+                                        command=lambda x=location: set_store_location(x, controller))
+            location_button.pack()
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("SystemSettingsMenu"))
+
+        button1.pack()
 
 
-def get_employee_functions_menu():
-    employee_tree = {
-        "EMPLOYEE FUNCTIONS MENU: Select sub-menu": 0,
-        "Find Employee Record": get_find_employee_menu,
-        "Create Employee Record": get_create_employee_menu,
-        "Delete Employee Record": get_delete_employee_menu,
-        "Exit": get_order_functions_menu
-    }
-    return employee_tree
+class FindOrderMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="FIND ORDER MENU: Type in order id to find the associated order")
+
+        output = tk.StringVar()
+        label2 = tk.Label(self, textvariable=output)
+
+        entry1 = tk.Entry(self)
+        button1 = tk.Button(self, text="Submit",
+                            command=lambda: output.set(get_find_order(entry1.get())))
+        button2 = tk.Button(self, text="Back",
+                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
+
+        label1.pack()
+        entry1.pack()
+        button1.pack()
+        button2.pack()
+        label2.pack()
 
 
-def get_find_employee_menu():
-    find_tree = {
-        "FIND EMPLOYEE RECORD MENU: Type in employee name to find information associated with them": 0,
-        "Exit": get_employee_functions_menu
-    }
-    return find_tree
+class CreateOrderMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="CREATE ORDER MENU: Type in product id to add to new order")
+
+        output = tk.StringVar()
+        label2 = tk.Label(self, textvariable=output)
+
+        entry1 = tk.Entry(self)
+        button1 = tk.Button(self, text="Add",
+                            command=lambda: output.set(output.get() + get_create_order(entry1.get()) + "\n"))
+        button2 = tk.Button(self, text="Submit",
+                            command=lambda: output.set(try_create_order(entry1.get()) + "\n"))
+        button3 = tk.Button(self, text="Back",
+                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
+
+        label1.pack()
+        entry1.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        label2.pack()
 
 
-def get_create_employee_menu():
-    create_tree = {
-        "CREATE EMPLOYEE RECORD MENU: Create new employee record by inputting employee information": 0,
-        "Exit": get_employee_functions_menu
-    }
-    return create_tree
+class DeleteOrderMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="DELETE ORDER MENU: Enter in order id to delete the associated order")
+
+        output = tk.StringVar()
+        label2 = tk.Label(self, textvariable=output)
+
+        button1 = tk.Button(self, text="Delete",
+                            command=lambda: output.set(try_delete_order(entry1.get()) + "\n"))
+        entry1 = tk.Entry(self)
+        button2 = tk.Button(self, text="Back",
+                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
+
+        label1.pack()
+        entry1.pack()
+        button1.pack()
+        button2.pack()
+        label2.pack()
 
 
-def get_delete_employee_menu():
-    delete_tree = {
-        "DELETE EMPLOYEE RECORD MENU: Delete employee record": 0,
-        "Exit": get_employee_functions_menu
-    }
+class UpdateOrderMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="UPDATE ORDER MENU: Enter in order id then new product id to add")
+
+        output1 = tk.StringVar()
+        output2 = tk.StringVar()
+        label2 = tk.Label(self, textvariable=output1)
+        label3 = tk.Label(self, textvariable=output2)
+
+        button1 = tk.Button(self, text="Display Order",
+                            command=lambda: [output1.set(get_find_order(entry1.get()) + "\n"), output2.set(" ")])
+        button2 = tk.Button(self, text="Add Product",
+                            command=lambda: output2.set(try_add_product_to_order(entry1.get(), entry2.get()) + "\n"))
+        entry1 = tk.Entry(self)
+        entry2 = tk.Entry(self)
+        button3 = tk.Button(self, text="Back",
+                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output1.set(""),
+                                             output2.set("")])
+
+        label1.pack()
+        entry1.pack()
+        button1.pack()
+        entry2.pack()
+        button2.pack()
+        button3.pack()
+        label3.pack()
+        label2.pack()
 
 
-def get_inventory_functions_menu():
-    inventory_tree = {}
-    return inventory_tree
+class FindCustomerMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="FIND CUSTOMER RECORD MENU: Type in customer name to find information associated "
+                                     "with them")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("CustomerFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class CreateCustomerMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="CREATE CUSTOMER RECORD MENU: Create new customer record by inputting customer "
+                                     "information")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("CustomerFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class DeleteCustomerMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="DELETE CUSTOMER RECORD MENU: Type in customer id to delete their record")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("CustomerFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class UpdateCustomerMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="UPDATE CUSTOMER RECORD MENU: Type in customer id to update their information")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("CustomerFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class FindEmployeeMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="FIND EMPLOYEE RECORD MENU: Type in employee name to find information associated "
+                                     "with them")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("EmployeeFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class CreateEmployeeMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="CREATE EMPLOYEE RECORD MENU: Create new employee record by inputting employee "
+                                     "information")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("EmployeeFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class DeleteEmployeeMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="DELETE EMPLOYEE RECORD MENU: Type in employee id to delete their record")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("EmployeeFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class UpdateEmployeeMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="UPDATE EMPLOYEE RECORD MENU: Type in employee id to update their information")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("EmployeeFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class FindProductMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="FIND PRODUCT MENU: Type in product name to find product information")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("InventoryFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class CreateProductMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="CREATE PRODUCT MENU: Create new product by entering in product information")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("InventoryFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
+
+
+class UpdateProductMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="UPDATE PRODUCT COST: Enter in product id to update product cost")
+
+        button1 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("InventoryFunctionsMenu"))
+
+        label1.pack()
+        button1.pack()
 
 
 # SQL query functions
@@ -221,8 +529,30 @@ def get_store_location(store):
     return str(store)
 
 
+def get_find_order(order_id):
+    return "Order info here: " + str(order_id)
+
+
+def get_create_order(product_id):
+    return "Product " + str(product_id) + " product name"
+
+
+def try_create_order(order_items_list):
+    #Create new order if able
+    return "Order/error message here"
+
+
+def try_delete_order(order_id):
+    return "Deleted order???"
+
+
+def try_add_product_to_order(order_id, product_id):
+    return "New product added"
+
+
 # Main function
 
 
-if __name__ == '__main__':
-    start()
+if __name__ == "__main__":
+    app = MenuGUI()
+    app.mainloop()
