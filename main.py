@@ -4,7 +4,7 @@ from tkinter import font as tkfont
 location = "Manhattan"
 
 conn = pyodbc.connect("Driver={SQL Server};"
-                      "Server=DESKTOP-1KGQNNQ;"
+                      "Server=DESKTOP-NOPHHB5;"
                       "Database=FoundationElectronicsDatabase;"
                       "Trusted_Connection=yes;")
 
@@ -277,7 +277,7 @@ class FindOrderMenu(tk.Frame):
                     "SELECT PurchaseID, OrderDate, E.EmployeeName, C.CustomerName FROM "
                     "FoundationElectronics.Purchase P FULL JOIN FoundationElectronics.Employee E ON E.EmployeeID = "
                     "P.EmployeeID FULL JOIN FoundationElectronics.Customer C ON C.CustomerID = P.CustomerID WHERE "
-                    "IsDeleted <> 1 ORDER BY OrderDate DESC"
+                    "P.IsDeleted <> 1 ORDER BY OrderDate DESC"
                 )
             else:
                 my_cursor = cursor.execute(search, criteria1)
@@ -308,7 +308,7 @@ class FindOrderMenu(tk.Frame):
                     "SELECT PurchaseID, OrderDate, E.EmployeeName, C.CustomerName FROM "
                     "FoundationElectronics.Purchase P FULL JOIN FoundationElectronics.Employee E ON E.EmployeeID = "
                     "P.EmployeeID FULL JOIN FoundationElectronics.Customer C ON C.CustomerID = P.CustomerID WHERE "
-                    "IsDeleted <> 1 AND P.PurchaseID = ? ORDER BY OrderDate DESC", order_search
+                    "P.IsDeleted <> 1 AND P.PurchaseID = ? ORDER BY OrderDate DESC", order_search
                 )
 
         display("", "")
