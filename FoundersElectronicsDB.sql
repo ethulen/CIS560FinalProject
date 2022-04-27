@@ -929,7 +929,7 @@ Delete FoundersElectronics.Employee where EmployeeID = 101
 select * from FoundersElectronics.Employee where EmployeeID = 101
 
 
-select *
+/*select *
 from FoundersElectronics.Employee E
 where E.EmployeeName = 'Raphael Morgan'
 
@@ -993,7 +993,7 @@ GO
 Delete FoundersElectronics.Customer where CustomerID = 101
 select * from FoundersElectronics.Customer where CustomerID = 101
 
-select *
+/*select *
 from FoundersElectronics.Customer C
 where C.CustomerName = 'Steven Pope' 
 
@@ -1032,4 +1032,4 @@ SET Quantity = 2
 WHERE OrderItemID = 101;
 
 Delete FoundersElectronics.OrderItemized where OrderItemID = 101
-select * from FoundersElectronics.OrderItemized where OrderItemID = 101
+select * from FoundersElectronics.OrderItemized where OrderItemID = 101*/
