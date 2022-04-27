@@ -791,10 +791,6 @@ ALTER TABLE FoundationElectronics.Employee
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
-ALTER TABLE FoundationElectronics.Purchase
-ADD IsDeleted BIT NOT NULL DEFAULT 0;
-GO
-
 ALTER TABLE FoundationElectronics.Customer
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
@@ -805,21 +801,17 @@ GO
 Select *
 From FoundationElectronics.Store S
 Order by S.StoreID
-
 --Supplier Queries--
 Select *
 From FoundationElectronics.Supplier S
 Order by S.SupplierID
-
 --Employee Queries--
 Insert into FoundationElectronics.Employee(EmployeeID, EmployeeName, StartDate, StoreID)
 Values(10101, 'Rachel Peterson', '03-06-2021', 101);
-
 UPDATE FoundationElectronics.Employee
 SET EmployeeName = 'Alfred Schmidt'
 WHERE EmployeeId = 101;
 GO
-
 CREATE TRIGGER SoftDelete_Employees ON FoundationElectronics.Employee
   INSTEAD OF DELETE AS
 SET NOCOUNT ON;
@@ -827,35 +819,26 @@ UPDATE FoundationElectronics.Employee
   SET IsDeleted = 1
   WHERE FoundationElectronics.Employee.EmployeeID IN (SELECT EmployeeID FROM deleted);
 GO
-
 Delete FoundationElectronics.Employee where EmployeeID = 101
 select * from FoundationElectronics.Employee where EmployeeID = 101
-
-
 select *
 from FoundationElectronics.Employee E
 where E.EmployeeName = 'Raphael Morgan'
-
 --Product Queries--
 Insert into FoundationElectronics.Product(ProductID, ProductName,	ItemCost, SupplierID)
 Values(101, 'Toaster', '$278.09', 100);
-
 UPDATE FoundationElectronics.Product
 SET ItemCost = '$249.99'
 WHERE ItemCost = '$278.09';
-
 select *
 from FoundationElectronics.Product P
 where P.ProductName = 'Vacuum'
-
 --Purchase Queries--
 Insert into FoundationElectronics.Purchase(PurchaseID,OrderItemID,OrderDate,EmployeeID, CustomerID,SpecialID)
 Values(157,4,'Jan 20, 2021',10101,27,56);
-
 UPDATE FoundationElectronics.Purchase
 SET OrderItemID = 34
 WHERE PurchaseID = 157;
-
 CREATE OR ALTER TRIGGER SoftDelete_Purchase ON FoundationElectronics.Purchase
   INSTEAD OF DELETE AS
 SET NOCOUNT ON;
@@ -865,19 +848,15 @@ UPDATE FoundationElectronics.Purchase
 GO
 Delete FoundationElectronics.Purchase where EmployeeID = 101
 select * from FoundationElectronics.Purchase where EmployeeID = 101
-
 select *
 from FoundationElectronics.Purchase P
 where P.PurchaseID = 82
-
 --Customer Queries--
 Insert into FoundationElectronics.Customer(CustomerName,CustomerID,Street,City, State)
 Values('Wilbur Robinson',101,'594-8807 Nec, Ave','Athens','Michigan')
-
 UPDATE FoundationElectronics.Customer
 SET Street = '596-8807 Nec, Ave'
 WHERE CustomerId = 101;
-
 CREATE OR ALTER TRIGGER SoftDelete_Customer ON FoundationElectronics.Customer
   INSTEAD OF DELETE AS
 SET NOCOUNT ON;
@@ -887,18 +866,14 @@ UPDATE FoundationElectronics.Customer
 GO
 Delete FoundationElectronics.Customer where CustomerID = 101
 select * from FoundationElectronics.Customer where CustomerID = 101
-
 select *
 from FoundationElectronics.Customer C
 where C.CustomerName = 'Steven Pope' 
-
 --Order Itemized Queries--
 Insert into FoundationElectronics.OrderItemized(OrderItemID,Quantity,ItemCost,SupplierID)
 Values(101,5,'$8.62',3)
-
 UPDATE FoundationElectronics.OrderItemized
 SET Quantity = 2
 WHERE OrderItemID = 101;
-
 Delete FoundationElectronics.OrderItemized where OrderItemID = 101
 select * from FoundationElectronics.OrderItemized where OrderItemID = 101*/
