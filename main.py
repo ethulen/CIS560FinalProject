@@ -1,10 +1,17 @@
-import tkinter as tk
+import tkinter as tk, pyodbc
 from tkinter import font as tkfont
 
 location = "Manhattan"
 
+conn = pyodbc.connect('Driver={SQL Server};'
+                      'Server=DESKTOP-NOPHHB5;'
+                      'Database=FoundationElectronicsDatabase;'
+                      'Trusted_Connection=yes;')
+
+cursor = conn.cursor()
 
 # Program logic
+
 
 def set_store_location(new_location, controller):
     global location
@@ -116,23 +123,17 @@ class OrderFunctionsMenu(tk.Frame):
 
         label1 = tk.Label(self, text="ORDER FUNCTIONS MENU: Select sub-menu")
 
-        button1 = tk.Button(self, text="Find Order",
+        button1 = tk.Button(self, text="Find/Delete/Update Order",
                             command=lambda: controller.show_frame("FindOrderMenu"))
         button2 = tk.Button(self, text="Create Order",
                             command=lambda: controller.show_frame("CreateOrderMenu"))
-        button3 = tk.Button(self, text="Delete Order",
-                            command=lambda: controller.show_frame("DeleteOrderMenu"))
-        button4 = tk.Button(self, text="Update Order",
-                            command=lambda: controller.show_frame("UpdateOrderMenu"))
-        button5 = tk.Button(self, text="Back",
+        button3 = tk.Button(self, text="Back",
                             command=lambda: controller.show_frame("MainMenu"))
 
         label1.pack()
         button1.pack()
         button2.pack()
         button3.pack()
-        button4.pack()
-        button5.pack()
 
 
 class CustomerFunctionsMenu(tk.Frame):
@@ -143,23 +144,17 @@ class CustomerFunctionsMenu(tk.Frame):
 
         label1 = tk.Label(self, text="CUSTOMER FUNCTIONS MENU: Select sub-menu")
 
-        button1 = tk.Button(self, text="Find Customer Record",
+        button1 = tk.Button(self, text="Find/Delete/Update Customer Record",
                             command=lambda: controller.show_frame("FindCustomerMenu"))
         button2 = tk.Button(self, text="Create Customer Record",
                             command=lambda: controller.show_frame("CreateCustomerMenu"))
-        button3 = tk.Button(self, text="Delete Customer Record",
-                            command=lambda: controller.show_frame("DeleteCustomerMenu"))
-        button4 = tk.Button(self, text="Update Customer Record",
-                            command=lambda: controller.show_frame("UpdateCustomerMenu"))
-        button5 = tk.Button(self, text="Back",
+        button3 = tk.Button(self, text="Back",
                             command=lambda: controller.show_frame("MainMenu"))
 
         label1.pack()
         button1.pack()
         button2.pack()
         button3.pack()
-        button4.pack()
-        button5.pack()
 
 
 class EmployeeFunctionsMenu(tk.Frame):
@@ -170,23 +165,17 @@ class EmployeeFunctionsMenu(tk.Frame):
 
         label1 = tk.Label(self, text="EMPLOYEE FUNCTIONS MENU: Select sub-menu")
 
-        button1 = tk.Button(self, text="Find Employee Record",
+        button1 = tk.Button(self, text="Find/Delete/Update Employee Record",
                             command=lambda: controller.show_frame("FindEmployeeMenu"))
         button2 = tk.Button(self, text="Create Employee Record",
                             command=lambda: controller.show_frame("CreateEmployeeMenu"))
-        button3 = tk.Button(self, text="Delete Employee Record",
-                            command=lambda: controller.show_frame("DeleteEmployeeMenu"))
-        button4 = tk.Button(self, text="Update Employee Record",
-                            command=lambda: controller.show_frame("UpdateEmployeeMenu"))
-        button5 = tk.Button(self, text="Back",
+        button3 = tk.Button(self, text="Back",
                             command=lambda: controller.show_frame("MainMenu"))
 
         label1.pack()
         button1.pack()
         button2.pack()
         button3.pack()
-        button4.pack()
-        button5.pack()
 
 
 class InventoryFunctionsMenu(tk.Frame):
@@ -197,20 +186,17 @@ class InventoryFunctionsMenu(tk.Frame):
 
         label1 = tk.Label(self, text="INVENTORY FUNCTIONS MENU: Select sub-menu")
 
-        button1 = tk.Button(self, text="Find Product",
+        button1 = tk.Button(self, text="Find/Update Product",
                             command=lambda: controller.show_frame("FindProductMenu"))
         button2 = tk.Button(self, text="Create Product",
                             command=lambda: controller.show_frame("CreateProductMenu"))
-        button3 = tk.Button(self, text="Update Product Cost",
-                            command=lambda: controller.show_frame("UpdateProductMenu"))
-        button4 = tk.Button(self, text="Back",
+        button3 = tk.Button(self, text="Back",
                             command=lambda: controller.show_frame("MainMenu"))
 
         label1.pack()
         button1.pack()
         button2.pack()
         button3.pack()
-        button4.pack()
 
 
 # GUI sub-menus
@@ -250,15 +236,18 @@ class FindOrderMenu(tk.Frame):
         label2 = tk.Label(self, textvariable=output)
 
         entry1 = tk.Entry(self)
-        button1 = tk.Button(self, text="Submit",
+        button1 = tk.Button(self, text="Delete",
                             command=lambda: output.set(get_find_order(entry1.get())))
-        button2 = tk.Button(self, text="Back",
+        button2 = tk.Button(self, text="Update",
+                            command=lambda: output.set(get_find_order(entry1.get())))
+        button3 = tk.Button(self, text="Back",
                             command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
 
         label1.pack()
         entry1.pack()
         button1.pack()
         button2.pack()
+        button3.pack()
         label2.pack()
 
 
