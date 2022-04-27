@@ -3,10 +3,10 @@ from tkinter import font as tkfont
 
 location = "Manhattan"
 
-conn = pyodbc.connect('Driver={SQL Server};'
-                      'Server=DESKTOP-NOPHHB5;'
-                      'Database=FoundationElectronicsDatabase;'
-                      'Trusted_Connection=yes;')
+conn = pyodbc.connect("Driver={SQL Server};"
+                      "Server=DESKTOP-1KGQNNQ;"
+                      "Database=FoundationElectronicsDatabase;"
+                      "Trusted_Connection=yes;")
 
 cursor = conn.cursor()
 
@@ -42,7 +42,7 @@ class MenuGUI(tk.Tk):
         self.frames = {}
         for frame in (
                 MainMenu, SystemSettingsMenu, ChangeStoreLocationMenu, OrderFunctionsMenu, FindOrderMenu,
-                CreateOrderMenu, DeleteOrderMenu, UpdateOrderMenu, CustomerFunctionsMenu, FindCustomerMenu,
+                CreateOrderMenu, UpdateOrderMenu, CustomerFunctionsMenu, FindCustomerMenu,
                 CreateCustomerMenu, DeleteCustomerMenu, UpdateCustomerMenu, EmployeeFunctionsMenu, FindEmployeeMenu,
                 CreateEmployeeMenu, DeleteEmployeeMenu, UpdateEmployeeMenu, InventoryFunctionsMenu, FindProductMenu,
                 CreateProductMenu, UpdateProductMenu
@@ -213,9 +213,9 @@ class ChangeStoreLocationMenu(tk.Frame):
 
         location_keys = get_all_store_locations()
 
-        for location in location_keys:
-            location_button = tk.Button(self, text=location,
-                                        command=lambda x=location: set_store_location(x, controller))
+        for query_location in location_keys:
+            location_button = tk.Button(self, text=query_location,
+                                        command=lambda x=query_location: set_store_location(x, controller))
             location_button.pack()
 
         button1 = tk.Button(self, text="Back",
@@ -230,25 +230,88 @@ class FindOrderMenu(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label1 = tk.Label(self, text="FIND ORDER MENU: Type in order id to find the associated order")
+        label1 = tk.Label(self, text="FIND/UPDATE/DELETE ORDER MENU: Edit or delete an order")
 
-        output = tk.StringVar()
-        label2 = tk.Label(self, textvariable=output)
+        button1 = tk.Button(self, text="Refresh", command=lambda: display("", ""))
+        button2 = tk.Button(self, text="Back", command=lambda: [controller.show_frame("OrderFunctionsMenu")])
+        entry1 = tk.Entry(self, bg="white")
+        button3 = tk.Button(self, text="Search", command=lambda: search_orders(entry1.get()))
 
-        entry1 = tk.Entry(self)
-        button1 = tk.Button(self, text="Delete",
-                            command=lambda: output.set(get_find_order(entry1.get())))
-        button2 = tk.Button(self, text="Update",
-                            command=lambda: output.set(get_find_order(entry1.get())))
-        button3 = tk.Button(self, text="Back",
-                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
+        label1.grid(row=0, column=0, pady=(7, 0), sticky='nw')
+        button1.grid(row=3, column=0, pady=7, sticky='nw')
+        button2.grid(row=3, column=0, pady=35, sticky='nw')
+        entry1.grid(row=3, column=0, pady=7, padx=70, sticky='nw')
+        button3.grid(row=3, column=0, pady=7, padx=200, sticky='nw')
 
-        label1.pack()
-        entry1.pack()
-        button1.pack()
-        button2.pack()
-        button3.pack()
-        label2.pack()
+        canvas_frame = tk.Frame(self)
+        canvas_frame.grid(row=2, column=0, sticky='nw', pady=(7, 0))
+        canvas_frame.grid_columnconfigure(0, weight=1)
+        canvas_frame.grid_rowconfigure(0, weight=1)
+        canvas_frame.grid_propagate(False)
+
+        canvas = tk.Canvas(canvas_frame)
+        canvas.grid(row=0, column=0, sticky="news")
+
+        scrollbar = tk.Scrollbar(canvas_frame, command=canvas.yview, orient="vertical")
+        scrollbar.grid(row=0, column=1, sticky='ns')
+        canvas.configure(yscrollcommand=scrollbar.set)
+
+        scroll_data = tk.Frame(canvas)
+        canvas.create_window((0, 0), window=scroll_data, anchor='nw')
+
+        def display(search, criteria1):
+            for widget in scroll_data.winfo_children():
+                widget.destroy()
+
+            purchaseID_label = tk.Label(scroll_data, width=15, text="PurchaseID")
+            purchaseID_label.grid(row=0, column=1)
+            order_date_label = tk.Label(scroll_data, width=15, text="Order Date")
+            order_date_label.grid(row=0, column=2)
+            employeeID_label = tk.Label(scroll_data, width=15, text="Employee Name")
+            employeeID_label.grid(row=0, column=3)
+            customerID_label = tk.Label(scroll_data, width=15, text="Customer Name")
+            customerID_label.grid(row=0, column=4)
+
+            if search == "":
+                my_cursor = cursor.execute(
+                    "SELECT PurchaseID, OrderDate, E.EmployeeName, C.CustomerName FROM "
+                    "FoundationElectronics.Purchase P FULL JOIN FoundationElectronics.Employee E ON E.EmployeeID = "
+                    "P.EmployeeID FULL JOIN FoundationElectronics.Customer C ON C.CustomerID = P.CustomerID WHERE "
+                    "IsDeleted <> 1 ORDER BY OrderDate DESC"
+                )
+            else:
+                my_cursor = cursor.execute(search, criteria1)
+
+            i = 1
+            for purchase in my_cursor:
+                for j in range(len(purchase)):
+                    e = tk.Label(scroll_data, width=15, text=purchase[j], relief='ridge', anchor="w")
+                    e.grid(row=i, column=j + 1)
+                e = tk.Button(scroll_data, width=5, text='Edit', relief='ridge',
+                              anchor="w", command=lambda k=purchase[0]: controller.show_frame("UpdateOrderMenu"))
+                e.grid(row=i, column=6)
+                f = tk.Button(scroll_data, width=5, text='Delete', relief='ridge',
+                              anchor="w", command=lambda k=purchase[0]: delete_order(k))
+                f.grid(row=i, column=7)
+                i += 1
+
+                scroll_data.update_idletasks()
+                canvas_frame.config(width=scrollbar.winfo_width()+735, height=500)
+                canvas.config(scrollregion=canvas.bbox("all"))
+
+        def delete_order(purchase_id):
+            cursor.execute("UPDATE FoundationElectronics.Purchase SET IsDeleted = 1 WHERE PurchaseID = ?", purchase_id)
+
+        def search_orders(order_search):
+            if order_search != "":
+                display(
+                    "SELECT PurchaseID, OrderDate, E.EmployeeName, C.CustomerName FROM "
+                    "FoundationElectronics.Purchase P FULL JOIN FoundationElectronics.Employee E ON E.EmployeeID = "
+                    "P.EmployeeID FULL JOIN FoundationElectronics.Customer C ON C.CustomerID = P.CustomerID WHERE "
+                    "IsDeleted <> 1 AND P.PurchaseID = ? ORDER BY OrderDate DESC", order_search
+                )
+
+        display("", "")
 
 
 class CreateOrderMenu(tk.Frame):
@@ -257,16 +320,17 @@ class CreateOrderMenu(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label1 = tk.Label(self, text="CREATE ORDER MENU: Type in product id to add to new order")
+        label1 = tk.Label(self, text="CREATE ORDER MENU: Type in product ids and customer id to add to new order")
 
         output = tk.StringVar()
         label2 = tk.Label(self, textvariable=output)
 
         entry1 = tk.Entry(self)
         button1 = tk.Button(self, text="Add",
-                            command=lambda: output.set(output.get() + get_create_order(entry1.get()) + "\n"))
+                            command=lambda: output.set(
+                                output.get() + "Added item: " + str(get_create_order(entry1.get())) + ".\n"))
         button2 = tk.Button(self, text="Submit",
-                            command=lambda: output.set(try_create_order(entry1.get()) + "\n"))
+                            command=lambda: output.set(try_create_order(output.get()) + "\n"))
         button3 = tk.Button(self, text="Back",
                             command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
 
@@ -275,30 +339,6 @@ class CreateOrderMenu(tk.Frame):
         button1.pack()
         button2.pack()
         button3.pack()
-        label2.pack()
-
-
-class DeleteOrderMenu(tk.Frame):
-
-    def __init__(self, parent, controller):
-        tk.Frame.__init__(self, parent)
-        self.controller = controller
-
-        label1 = tk.Label(self, text="DELETE ORDER MENU: Enter in order id to delete the associated order")
-
-        output = tk.StringVar()
-        label2 = tk.Label(self, textvariable=output)
-
-        button1 = tk.Button(self, text="Delete",
-                            command=lambda: output.set(try_delete_order(entry1.get()) + "\n"))
-        entry1 = tk.Entry(self)
-        button2 = tk.Button(self, text="Back",
-                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output.set("")])
-
-        label1.pack()
-        entry1.pack()
-        button1.pack()
-        button2.pack()
         label2.pack()
 
 
@@ -322,7 +362,7 @@ class UpdateOrderMenu(tk.Frame):
         entry1 = tk.Entry(self)
         entry2 = tk.Entry(self)
         button3 = tk.Button(self, text="Back",
-                            command=lambda: [controller.show_frame("OrderFunctionsMenu"), output1.set(""),
+                            command=lambda: [controller.show_frame("FindOrderMenu"), output1.set(""),
                                              output2.set("")])
 
         label1.pack()
@@ -522,12 +562,25 @@ def get_find_order(order_id):
     return "Order info here: " + str(order_id)
 
 
-def get_create_order(product_id):
-    return "Product " + str(product_id) + " product name"
+def get_create_order(product_name):
+    product_entry = cursor.execute("SELECT * FROM FoundationElectronics.Product P WHERE P.ProductName = ?", product_name)
+
+    if product_entry.arraysize > 0 and product_entry is not None:
+        for attribute in product_entry:
+            return attribute
+    else:
+        return "Invalid product name, no item added"
 
 
 def try_create_order(order_items_list):
-    #Create new order if able
+
+    product_list = []
+    for product in order_items_list.split("\n"):
+
+        if product.find("(") != -1:
+            product_list.append(product[product.find("(") + 2: product.find(",") - 1])
+
+    print(product_list)
     return "Order/error message here"
 
 
