@@ -787,11 +787,11 @@ ALTER TABLE FoundationElectronics.Purchase
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
-ALTER TABLE FoundationElectronics.Employee
+ALTER TABLE FoundationElectronics.Product
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
-ALTER TABLE FoundationElectronics.Purchase
+ALTER TABLE FoundationElectronics.Employee
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
@@ -799,6 +799,9 @@ ALTER TABLE FoundationElectronics.Customer
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
+SELECT CustomerID, CustomerName, Street, City, State FROM 
+                        FoundationElectronics.Customer C
+                        ORDER BY CustomerName ASC
 
 /*
 --Store Queries--
