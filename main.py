@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import pyodbc
 import random
 import tkinter as tk
@@ -5,11 +7,12 @@ from tkinter import font as tkfont
 
 location = "Iowa City"
 location_id = "1"
+active_employee = None
 
 active_purchase = None
 
 conn = pyodbc.connect("Driver={SQL Server};"
-                      "Server=HL-ASTS-ITLT03;"
+                      "Server=ETHAN-PC;"
                       "Database=FoundationElectronicsDatabase;"
                       "Trusted_Connection=yes;")
 
@@ -31,6 +34,11 @@ def set_store_location(new_location, loc_id, controller):
 def set_purchase_update(purchase_id):
     global active_purchase
     active_purchase = purchase_id
+
+
+def set_employee_update(employee_id):
+    global active_employee
+    active_employee = employee_id
 
 
 # GUI logic and control
@@ -481,7 +489,8 @@ class UpdateOrderMenu(tk.Frame):
 
         if search == "":
             my_cursor = cursor.execute(
-                "SELECT * FROM FoundationElectronics.OrderItemized WHERE IsDeleted <> 1 AND PurchaseID = ?", self.purchase_id
+                "SELECT * FROM FoundationElectronics.OrderItemized WHERE IsDeleted <> 1 AND PurchaseID = ?",
+                self.purchase_id
             )
         else:
             my_cursor = cursor.execute(search, criteria1)
@@ -501,7 +510,8 @@ class UpdateOrderMenu(tk.Frame):
         self.canvas.config(scrollregion=self.canvas.bbox("all"))
 
     def delete_order(self, purchase_id):
-        cursor.execute("UPDATE FoundationElectronics.OrderItemized SET IsDeleted = 1 WHERE OrderItemId = ?", purchase_id)
+        cursor.execute("UPDATE FoundationElectronics.OrderItemized SET IsDeleted = 1 WHERE OrderItemId = ?",
+                       purchase_id)
         self.display("", "")
 
     def search_orders(self, order_search):
@@ -742,7 +752,8 @@ class FindEmployeeMenu(tk.Frame):
                 e = tk.Label(self.scroll_data, width=15, text=purchase[j], relief='ridge', anchor="w")
                 e.grid(row=i, column=j + 1)
             e = tk.Button(self.scroll_data, width=5, text='Edit', relief='ridge',
-                          anchor="w", command=lambda k=purchase[0]: self.controller.show_frame("UpdateEmployeeMenu"))
+                          anchor="w", command=lambda k=purchase[0]: [set_employee_update(k),
+                                                                     self.controller.show_frame("UpdateEmployeeMenu")])
             e.grid(row=i, column=6)
             f = tk.Button(self.scroll_data, width=5, text='Delete', relief='ridge',
                           anchor="w", command=lambda k=purchase[0]: self.delete_employee(k))
@@ -798,36 +809,89 @@ class CreateEmployeeMenu(tk.Frame):
 
 
 class UpdateEmployeeMenu(tk.Frame):
+    var_string = None
+    employee_id = None
+    scroll_data = None
+    canvas_frame = None
+    scrollbar = None
+    canvas = None
 
     def __init__(self, parent, controller):
         tk.Frame.__init__(self, parent)
         self.controller = controller
+        self.bind("<<ShowFrame>>", self.on_show_frame)
 
-        label1 = tk.Label(self, text="UPDATE EMPLOYEE RECORD MENU: Type in employee id to update their information")
-
-        output1 = tk.StringVar()
-        output2 = tk.StringVar()
-        label2 = tk.Label(self, textvariable=output1)
-        label3 = tk.Label(self, textvariable=output2)
-
-        button1 = tk.Button(self, text="Display Employee",
-                            command=lambda: [output1.set(get_find_order(entry1.get()) + "\n"), output2.set(" ")])
-        button2 = tk.Button(self, text="Add Employee",
-                            command=lambda: output2.set(try_add_product_to_order(entry1.get(), entry2.get()) + "\n"))
         entry1 = tk.Entry(self)
         entry2 = tk.Entry(self)
-        button3 = tk.Button(self, text="Back",
-                            command=lambda: [controller.show_frame("FindEmployeeMenu"), output1.set(""),
-                                             output2.set("")])
+        button3 = tk.Button(self, text="Back", command=lambda: controller.show_frame("FindEmployeeMenu"))
+        button1 = tk.Button(self, text="Update", command = lambda:[output.set(try_update_employee(entry1.get(), entry2.get(), self.employee_id)), self.display("","")])
 
-        label1.pack()
-        entry1.pack()
-        button1.pack()
-        entry2.pack()
-        button2.pack()
-        button3.pack()
-        label3.pack()
-        label2.pack()
+        self.var_string = tk.StringVar(
+            value="UPDATE EMPLOYEE RECORD: Edit employee attributes " + str(self.employee_id))
+        label1 = tk.Label(self, textvariable=self.var_string)
+
+        output = tk.StringVar()
+        label2 = tk.Label(self, textvariable=output)
+
+        label1.grid(row=0, column=0, pady=(7, 0), sticky='nw')
+        label2.grid(row=0, column=0, pady=(7, 0), padx=350, sticky='nw')
+        entry1.grid(row=3, column=0, pady=7, padx=90, sticky='nw')
+        entry2.grid(row=3, column=0, pady=7, padx=180, sticky='nw')
+        button1.grid(row=3, column=0, pady=7, padx=270, sticky='nw')
+        button3.grid(row=3, column=0, pady=7, padx=0, sticky='nw')
+
+        self.canvas_frame = tk.Frame(self)
+        self.canvas_frame.grid(row=2, column=0, sticky='nw', pady=(7, 0))
+        self.canvas_frame.grid_columnconfigure(0, weight=1)
+        self.canvas_frame.grid_rowconfigure(0, weight=1)
+        self.canvas_frame.grid_propagate(False)
+
+        self.canvas = tk.Canvas(self.canvas_frame)
+        self.canvas.grid(row=0, column=0, sticky="news")
+
+        self.scrollbar = tk.Scrollbar(self.canvas_frame, command=self.canvas.yview, orient="vertical")
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scroll_data = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.scroll_data, anchor='nw')
+
+    def display(self, search, criteria1):
+        for widget in self.scroll_data.winfo_children():
+            widget.destroy()
+
+        employeeID_label = tk.Label(self.scroll_data, width=15, text="EmployeeID")
+        employeeID_label.grid(row=0, column=1)
+        EmployeeName_label = tk.Label(self.scroll_data, width=15, text="Employee Name")
+        EmployeeName_label.grid(row=0, column=2)
+        StartDate_label = tk.Label(self.scroll_data, width=15, text="Start Date")
+        StartDate_label.grid(row=0, column=3)
+        StoreID_label = tk.Label(self.scroll_data, width=15, text="Store ID")
+        StoreID_label.grid(row=0, column=4)
+
+        if search == "":
+            my_cursor = cursor.execute(
+                "SELECT * FROM FoundationElectronics.Employee WHERE IsDeleted <> 1 AND EmployeeID = ?",
+                self.employee_id
+            )
+        else:
+            my_cursor = cursor.execute(search, criteria1)
+
+        i = 1
+        for purchase in my_cursor:
+            for j in range(len(purchase) - 1):
+                e = tk.Label(self.scroll_data, width=15, text=purchase[j], relief='ridge', anchor="w")
+                e.grid(row=i, column=j + 1)
+            i += 1
+
+        self.scroll_data.update_idletasks()
+        self.canvas_frame.config(width=self.scrollbar.winfo_width() + 735, height=500)
+        self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+    def on_show_frame(self, event):
+        self.employee_id = active_employee
+        self.var_string.set("UPDATE EMPLOYEE RECORD: Edit employee attributes " + str(self.employee_id))
+        self.display("", "")
 
 
 class FindProductMenu(tk.Frame):
@@ -1017,11 +1081,48 @@ def try_add_product_to_order(purchase_id, product_name):
         price_sold = round(float(product[1][1:]) * (1 + random.uniform(0, 1)), 2)
 
         cursor.execute("INSERT INTO FoundationElectronics.OrderItemized(PurchaseID, OrderItemID, PriceSold, "
-                       "ProductName) VALUES(?,?,?,?)", purchase_id, order_itemized_id, "$" + str(price_sold), product_name)
+                       "ProductName) VALUES(?,?,?,?)", purchase_id, order_itemized_id, "$" + str(price_sold),
+                       product_name)
 
         return "Added item " + product_name + " at $" + str(price_sold) + " to order " + \
                str(purchase_id) + " as order line " + str(order_itemized_id)
     return "Invalid Product"
+
+
+def get_find_employeeID(employee_id):
+    return "Order info here: " + str(employee_id)
+
+
+def get_valid_employee(employee_name):
+    employee_entry = cursor.execute("SELECT * FROM FoundationElectronics.Employee E WHERE E.EmployeeID = ?",
+                                    employee_name)
+
+    if employee_entry.arraysize > 0 and employee_entry is not None:
+        for attribute in employee_entry:
+            return attribute
+    else:
+        return "Invalid employee name, no employee added"
+
+
+def try_create_employee(employee_list):
+    workforce = []
+    for employee in employee_list.split("\n"):
+
+        if employee.find("(") != -1:
+            workforce.append(employee[employee.find("(") + 2: employee.find(",") - 1])
+
+    print(workforce)
+    return "Order/error message here"
+
+
+def try_delete_employee(employee_id):
+    return "Deleted employee???"
+
+
+def try_update_employee( employee_name, store_id, employee_id):
+    cursor.execute("UPDATE FoundationElectronics.Employee SET StoreID = ?, EmployeeName = ? WHERE EmployeeID = ?", store_id, employee_name, employee_id)
+
+    return "Updated Employee " + employee_name + " to store " + str(store_id) + " with ID " + str(employee_id)
 
 
 # Main function

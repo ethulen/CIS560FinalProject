@@ -6,7 +6,6 @@ drop table if exists FoundationElectronics.Customer
 drop table if exists FoundationElectronics.Supplier
 drop table if exists FoundationElectronics.Store
 
-
 CREATE TABLE FoundationElectronics.Store
 (
 	StoreID INT Primary Key,
@@ -799,9 +798,9 @@ ALTER TABLE FoundationElectronics.Customer
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
-SELECT CustomerID, CustomerName, Street, City, State FROM 
-                        FoundationElectronics.Customer C
-                        ORDER BY CustomerName ASC
+SELECT S.StoreID, S.City, S.State
+FROM FoundationElectronics.Store S
+ORDER BY S.StoreID ASC
 
 /*
 --Store Queries--
