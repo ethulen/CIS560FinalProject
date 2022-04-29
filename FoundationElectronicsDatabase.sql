@@ -579,106 +579,106 @@ VALUES
 
   INSERT INTO FoundationElectronics.Purchase(PurchaseID,OrderDate,EmployeeID,CustomerID)
 VALUES
-  (157,'Jan 20, 2021',10000,1),
-  (459,'Sep 14, 2019',10001,2),
-  (909,'Jul 21, 2020',10002,3),
-  (293,'Sep 22, 2022',10003,4),
-  (329,'Jun 5, 2020',10004,5),
-  (736,'Apr 10, 2023',10005,6),
-  (64,'Feb 8, 2023',10006,7),
-  (100,'Jul 4, 2018',10007,8),
-  (731,'Feb 5, 2020',10008,9),
-  (6,'Sep 2, 2019',10009,10),
-  (654,'Dec 12, 2018',10010,11),
-  (700,'Apr 6, 2022',10011,12),
-  (493,'Jun 17, 2019',10012,13),
-  (854,'May 30, 2019',10013,14),
-  (85,'Oct 2, 2022',10014,15),
-  (432,'Oct 31, 2022',10015,16),
-  (817,'Jul 5, 2020',10016,17),
-  (364,'Feb 20, 2020',10017,18),
-  (962,'Nov 29, 2022',10018,19),
-  (596,'May 27, 2019',10019,20),
-  (671,'Jul 8, 2022',10020,21),
-  (271,'Oct 20, 2021',10021,22),
-  (504,'Aug 16, 2022',10022,23),
-  (753,'Jul 31, 2018',10023,24),
-  (135,'Oct 22, 2021',10024,25),
-  (660,'Dec 3, 2020',10025,26),
-  (724,'Aug 7, 2020',10026,27),
-  (141,'Aug 27, 2022',10027,28),
-  (287,'Jan 10, 2019',10028,29),
-  (1,'Jan 13, 2020',10029,30),
-  (52,'Nov 9, 2018',10030,31),
-  (469,'Jan 26, 2019',10031,32),
-  (597,'Dec 16, 2018',10032,33),
-  (858,'Sep 2, 2018',10033,34),
-  (105,'Apr 19, 2019',10034,35),
-  (676,'May 13, 2020',10035,36),
-  (409,'May 22, 2020',10036,37),
-  (84,'Jan 22, 2021',10037,38),
-  (503,'Jul 4, 2018',10038,39),
-  (754,'Jan 15, 2022',10039,40),
-  (922,'Jan 16, 2020',10040,41),
-  (103,'Apr 4, 2023',10041,42),
-  (181,'May 8, 2021',10042,43),
-  (738,'Aug 29, 2018',10043,44),
-  (707,'May 23, 2021',10044,45),
-  (324,'Apr 26, 2021',10045,46),
-  (231,'Aug 24, 2019',10046,47),
-  (92,'Jun 9, 2022',10047,48),
-  (748,'Dec 27, 2019',10048,49),
-  (782,'Jan 11, 2019',10049,50),
-  (983,'Sep 21, 2022',10050,51),
-  (592,'May 8, 2022',10051,52),
-  (995,'Dec 11, 2021',10052,53),
-  (523,'Nov 22, 2020',10053,54),
-  (126,'Mar 26, 2020',10054,55),
-  (771,'Nov 5, 2020',10055,56),
-  (804,'Nov 2, 2019',10056,57),
-  (253,'Oct 20, 2019',10057,58),
-  (831,'Apr 30, 2018',10058,59),
-  (246,'Nov 2, 2021',10059,60),
-  (227,'Nov 10, 2021',10060,61),
-  (664,'Nov 25, 2019',10061,62),
-  (657,'Aug 10, 2018',10062,63),
-  (476,'Jul 7, 2020',10063,64),
-  (58,'May 25, 2020',10064,65),
-  (184,'May 30, 2018',10065,66),
-  (80,'Jul 27, 2018',10066,67),
-  (224,'Jun 9, 2021',10067,68),
-  (19,'Jul 16, 2018',10068,69),
-  (501,'Dec 15, 2021',10069,70),
-  (945,'Jan 12, 2020',10070,71),
-  (89,'Sep 11, 2018',10071,72),
-  (796,'Oct 22, 2020',10072,73),
-  (295,'Apr 1, 2022',10073,74),
-  (752,'Apr 6, 2023',10074,75),
-  (675,'Oct 14, 2022',10075,76),
-  (533,'Mar 27, 2023',10076,77),
-  (529,'Dec 17, 2020',10077,78),
-  (557,'Apr 30, 2021',10078,79),
-  (543,'Jul 24, 2018',10079,80),
-  (305,'Jul 9, 2018',10080,81),
-  (60,'Apr 12, 2022',10081,82),
-  (863,'Jul 31, 2022',10082,83),
-  (206,'Apr 28, 2019',10083,84),
-  (834,'Oct 20, 2021',10084,85),
-  (131,'Apr 6, 2019',10085,86),
-  (887,'Aug 30, 2021',10086,87),
-  (517,'Dec 29, 2019',10087,88),
-  (825,'Jan 25, 2021',10088,89),
-  (969,'Jul 15, 2018',10089,90),
-  (82,'Oct 31, 2020',10090,91),
-  (171,'Oct 16, 2019',10091,92),
-  (895,'Jun 1, 2019',10092,93),
-  (312,'Sep 11, 2018',10093,94),
-  (715,'Apr 5, 2023',10094,95),
-  (153,'May 10, 2022',10095,96),
-  (175,'Nov 11, 2018',10096,97),
-  (819,'Sep 28, 2018',10097,98),
-  (270,'May 19, 2022',10098,99),
-  (689,'Sep 4, 2019',10099,100);
+  (1,'Jan 20, 2021',10000,1),
+  (2,'Sep 14, 2019',10001,2),
+  (3,'Jul 21, 2020',10002,3),
+  (4,'Sep 22, 2022',10003,4),
+  (5,'Jun 5, 2020',10004,5),
+  (6,'Apr 10, 2023',10005,6),
+  (7,'Feb 8, 2023',10006,7),
+  (8,'Jul 4, 2018',10007,8),
+  (9,'Feb 5, 2020',10008,9),
+  (10,'Sep 2, 2019',10009,10),
+  (11,'Dec 12, 2018',10010,11),
+  (12,'Apr 6, 2022',10011,12),
+  (13,'Jun 17, 2019',10012,13),
+  (14,'May 30, 2019',10013,14),
+  (15,'Oct 2, 2022',10014,15),
+  (16,'Oct 31, 2022',10015,16),
+  (17,'Jul 5, 2020',10016,17),
+  (18,'Feb 20, 2020',10017,18),
+  (19,'Nov 29, 2022',10018,19),
+  (20,'May 27, 2019',10019,20),
+  (21,'Jul 8, 2022',10020,21),
+  (22,'Oct 20, 2021',10021,22),
+  (23,'Aug 16, 2022',10022,23),
+  (24,'Jul 31, 2018',10023,24),
+  (25,'Oct 22, 2021',10024,25),
+  (26,'Dec 3, 2020',10025,26),
+  (27,'Aug 7, 2020',10026,27),
+  (28,'Aug 27, 2022',10027,28),
+  (29,'Jan 10, 2019',10028,29),
+  (30,'Jan 13, 2020',10029,30),
+  (31,'Nov 9, 2018',10030,31),
+  (32,'Jan 26, 2019',10031,32),
+  (33,'Dec 16, 2018',10032,33),
+  (34,'Sep 2, 2018',10033,34),
+  (35,'Apr 19, 2019',10034,35),
+  (36,'May 13, 2020',10035,36),
+  (37,'May 22, 2020',10036,37),
+  (38,'Jan 22, 2021',10037,38),
+  (39,'Jul 4, 2018',10038,39),
+  (40,'Jan 15, 2022',10039,40),
+  (41,'Jan 16, 2020',10040,41),
+  (42,'Apr 4, 2023',10041,42),
+  (43,'May 8, 2021',10042,43),
+  (44,'Aug 29, 2018',10043,44),
+  (45,'May 23, 2021',10044,45),
+  (46,'Apr 26, 2021',10045,46),
+  (47,'Aug 24, 2019',10046,47),
+  (48,'Jun 9, 2022',10047,48),
+  (49,'Dec 27, 2019',10048,49),
+  (50,'Jan 11, 2019',10049,50),
+  (51,'Sep 21, 2022',10050,51),
+  (52,'May 8, 2022',10051,52),
+  (53,'Dec 11, 2021',10052,53),
+  (54,'Nov 22, 2020',10053,54),
+  (55,'Mar 26, 2020',10054,55),
+  (56,'Nov 5, 2020',10055,56),
+  (57,'Nov 2, 2019',10056,57),
+  (58,'Oct 20, 2019',10057,58),
+  (59,'Apr 30, 2018',10058,59),
+  (60,'Nov 2, 2021',10059,60),
+  (61,'Nov 10, 2021',10060,61),
+  (62,'Nov 25, 2019',10061,62),
+  (63,'Aug 10, 2018',10062,63),
+  (64,'Jul 7, 2020',10063,64),
+  (65,'May 25, 2020',10064,65),
+  (66,'May 30, 2018',10065,66),
+  (67,'Jul 27, 2018',10066,67),
+  (68,'Jun 9, 2021',10067,68),
+  (69,'Jul 16, 2018',10068,69),
+  (70,'Dec 15, 2021',10069,70),
+  (71,'Jan 12, 2020',10070,71),
+  (72,'Sep 11, 2018',10071,72),
+  (73,'Oct 22, 2020',10072,73),
+  (74,'Apr 1, 2022',10073,74),
+  (75,'Apr 6, 2023',10074,75),
+  (76,'Oct 14, 2022',10075,76),
+  (77,'Mar 27, 2023',10076,77),
+  (78,'Dec 17, 2020',10077,78),
+  (79,'Apr 30, 2021',10078,79),
+  (80,'Jul 24, 2018',10079,80),
+  (81,'Jul 9, 2018',10080,81),
+  (82,'Apr 12, 2022',10081,82),
+  (83,'Jul 31, 2022',10082,83),
+  (84,'Apr 28, 2019',10083,84),
+  (85,'Oct 20, 2021',10084,85),
+  (86,'Apr 6, 2019',10085,86),
+  (87,'Aug 30, 2021',10086,87),
+  (88,'Dec 29, 2019',10087,88),
+  (89,'Jan 25, 2021',10088,89),
+  (90,'Jul 15, 2018',10089,90),
+  (91,'Oct 31, 2020',10090,91),
+  (92,'Oct 16, 2019',10091,92),
+  (93,'Jun 1, 2019',10092,93),
+  (94,'Sep 11, 2018',10093,94),
+  (95,'Apr 5, 2023',10094,95),
+  (96,'May 10, 2022',10095,96),
+  (97,'Nov 11, 2018',10096,97),
+  (98,'Sep 28, 2018',10097,98),
+  (99,'May 19, 2022',10098,99),
+  (100,'Sep 4, 2019',10099,100);
 
 INSERT INTO FoundationElectronics.OrderItemized(PurchaseID, OrderItemID, PriceSold, ProductName)
 VALUES
@@ -716,74 +716,78 @@ VALUES
   (19,32,'$238.21','Doorbell'),
   (19,33,'$153.89','drive2'),
   (19,34,'$74.14','drive4'),
-  (153,35,'$218.75','drive5'),
-  (153,36,'$384.87','drive6'),
-  (153,37,'$359.83','dryer'),
-  (153,38,'$360.46','Earphones'),
-  (153,39,'$457.64','Electric'),
-  (153,40,'$351.35','Electric2'),
-  (153,41,'$15.38','Electric3'),
-  (153,42,'$144.32','Electric4'),
-  (153,43,'$56.15','Exhaust'),
-  (153,44,'$242.76','Facial'),
-  (153,45,'$75.72','fan'),
-  (153,46,'$338.96','fan2'),
-  (153,47,'$57.56','fan3'),
-  (153,48,'$194.33','fan4'),
-  (153,49,'$376.34','Fish'),
-  (153,50,'$9.06','fryer'),
-  (153,51,'$376.89','fryer2'),
-  (153,52,'$484.33','Grandfather'),
-  (153,53,'$325.11','Hairdryer'),
-  (153,54,'$119.19','Hairdryer2'),
-  (153,55,'$258.68','Hairdryer3'),
-  (153,56,'$496.16','Hairdryer4'),
-  (153,57,'$312.15','Headset'),
-  (153,58,'$42.34','Inkjet'),
-  (153,59,'$188.84','Iron'),
-  (153,60,'$375.30','Kitchen'),
-  (153,61,'$31.98','lamp'),
-  (153,62,'$30.12','machine'),
-  (157,63,'$410.61','machine2'),
-  (157,64,'$135.82','maker'),
-  (157,65,'$399.80','Meat'),
-  (157,66,'$411.21','Microphone'),
-  (157,67,'$464.48','Microphone2'),
-  (157,68,'$158.94','Mixer'),
-  (157,69,'$468.36','Mixer2'),
-  (157,70,'$485.83','pencil'),
-  (157,71,'$228.87','pencil2'),
-  (157,72,'$318.76','Piano'),
-  (157,73,'$295.61','Piano2'),
-  (157,74,'$273.23','player'),
-  (157,75,'$370.73','player2'),
-  (157,76,'$488.13','Plotter2'),
-  (157,77,'$266.76','Plotter3'),
-  (157,78,'$7.69','Pressure'),
-  (157,79,'$343.22','printer'),
-  (157,80,'$100.24','printer2'),
-  (157,81,'$87.34','pumps'),
-  (141,82,'$322.39','pumps2'),
-  (141,83,'$11.24','purifier'),
-  (141,84,'$336.80','Radiator'),
-  (141,85,'$264.03','Reading'),
-  (141,86,'$362.56','Refrigerator'),
-  (141,87,'$192.83','Refrigerator2'),
-  (141,88,'$96.25','Remote'),
-  (141,89,'$462.28','Rice'),
-  (141,90,'$211.74','scale'),
-  (141,91,'$293.35','Tablet'),
-  (141,92,'$138.56','Tablet2'),
-  (141,93,'$484.47','tank'),
-  (141,94,'$11.94','tank2'),
-  (141,95,'$92.45','Timer'),
-  (141,96,'$10.86','toy'),
-  (141,97,'$239.31','Vacuum'),
-  (141,98,'$16.39','Washing'),
-  (141,99,'$270.94','Washing2'),
-  (141,100,'$108.91','Washing3');
+  (100,35,'$218.75','drive5'),
+  (99,36,'$384.87','drive6'),
+  (98,37,'$359.83','dryer'),
+  (56,38,'$360.46','Earphones'),
+  (23,39,'$457.64','Electric'),
+  (67,40,'$351.35','Electric2'),
+  (78,41,'$15.38','Electric3'),
+  (23,42,'$144.32','Electric4'),
+  (32,43,'$56.15','Exhaust'),
+  (56,44,'$242.76','Facial'),
+  (78,45,'$75.72','fan'),
+  (45,46,'$338.96','fan2'),
+  (56,47,'$57.56','fan3'),
+  (65,48,'$194.33','fan4'),
+  (67,49,'$376.34','Fish'),
+  (76,50,'$9.06','fryer'),
+  (99,51,'$376.89','fryer2'),
+  (23,52,'$484.33','Grandfather'),
+  (23,53,'$325.11','Hairdryer'),
+  (24,54,'$119.19','Hairdryer2'),
+  (42,55,'$258.68','Hairdryer3'),
+  (67,56,'$496.16','Hairdryer4'),
+  (87,57,'$312.15','Headset'),
+  (98,58,'$42.34','Inkjet'),
+  (23,59,'$188.84','Iron'),
+  (32,60,'$375.30','Kitchen'),
+  (10,61,'$31.98','lamp'),
+  (2,62,'$30.12','machine'),
+  (3,63,'$410.61','machine2'),
+  (23,64,'$135.82','maker'),
+  (23,65,'$399.80','Meat'),
+  (23,66,'$411.21','Microphone'),
+  (32,67,'$464.48','Microphone2'),
+  (1,68,'$158.94','Mixer'),
+  (32,69,'$468.36','Mixer2'),
+  (1,70,'$485.83','pencil'),
+  (1,71,'$228.87','pencil2'),
+  (1,72,'$318.76','Piano'),
+  (1,73,'$295.61','Piano2'),
+  (2,74,'$273.23','player'),
+  (22,75,'$370.73','player2'),
+  (3,76,'$488.13','Plotter2'),
+  (4,77,'$266.76','Plotter3'),
+  (5,78,'$7.69','Pressure'),
+  (6,79,'$343.22','printer'),
+  (7,80,'$100.24','printer2'),
+  (8,81,'$87.34','pumps'),
+  (9,82,'$322.39','pumps2'),
+  (10,83,'$11.24','purifier'),
+  (10,84,'$336.80','Radiator'),
+  (11,85,'$264.03','Reading'),
+  (12,86,'$362.56','Refrigerator'),
+  (13,87,'$192.83','Refrigerator2'),
+  (6,88,'$96.25','Remote'),
+  (7,89,'$462.28','Rice'),
+  (8,90,'$211.74','scale'),
+  (8,91,'$293.35','Tablet'),
+  (8,92,'$138.56','Tablet2'),
+  (5,93,'$484.47','tank'),
+  (5,94,'$11.94','tank2'),
+  (5,95,'$92.45','Timer'),
+  (7,96,'$10.86','toy'),
+  (7,97,'$239.31','Vacuum'),
+  (7,98,'$16.39','Washing'),
+  (5,99,'$270.94','Washing2'),
+  (3,100,'$108.91','Washing3');
 
 ALTER TABLE FoundationElectronics.Purchase
+ADD IsDeleted BIT NOT NULL DEFAULT 0;
+GO
+
+ALTER TABLE FoundationElectronics.Product
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
@@ -795,27 +799,26 @@ ALTER TABLE FoundationElectronics.Customer
 ADD IsDeleted BIT NOT NULL DEFAULT 0;
 GO
 
+ALTER TABLE FoundationElectronics.OrderItemized
+ADD IsDeleted BIT NOT NULL DEFAULT 0;
+GO
 
 /*
 --Store Queries--
 Select *
 From FoundationElectronics.Store S
 Order by S.StoreID
-
 --Supplier Queries--
 Select *
 From FoundationElectronics.Supplier S
 Order by S.SupplierID
-
 --Employee Queries--
 Insert into FoundationElectronics.Employee(EmployeeID, EmployeeName, StartDate, StoreID)
 Values(10101, 'Rachel Peterson', '03-06-2021', 101);
-
 UPDATE FoundationElectronics.Employee
 SET EmployeeName = 'Alfred Schmidt'
 WHERE EmployeeId = 101;
 GO
-
 CREATE TRIGGER SoftDelete_Employees ON FoundationElectronics.Employee
   INSTEAD OF DELETE AS
 SET NOCOUNT ON;
@@ -823,35 +826,26 @@ UPDATE FoundationElectronics.Employee
   SET IsDeleted = 1
   WHERE FoundationElectronics.Employee.EmployeeID IN (SELECT EmployeeID FROM deleted);
 GO
-
 Delete FoundationElectronics.Employee where EmployeeID = 101
 select * from FoundationElectronics.Employee where EmployeeID = 101
-
-
 select *
 from FoundationElectronics.Employee E
 where E.EmployeeName = 'Raphael Morgan'
-
 --Product Queries--
 Insert into FoundationElectronics.Product(ProductID, ProductName,	ItemCost, SupplierID)
 Values(101, 'Toaster', '$278.09', 100);
-
 UPDATE FoundationElectronics.Product
 SET ItemCost = '$249.99'
 WHERE ItemCost = '$278.09';
-
 select *
 from FoundationElectronics.Product P
 where P.ProductName = 'Vacuum'
-
 --Purchase Queries--
 Insert into FoundationElectronics.Purchase(PurchaseID,OrderItemID,OrderDate,EmployeeID, CustomerID,SpecialID)
 Values(157,4,'Jan 20, 2021',10101,27,56);
-
 UPDATE FoundationElectronics.Purchase
 SET OrderItemID = 34
 WHERE PurchaseID = 157;
-
 CREATE OR ALTER TRIGGER SoftDelete_Purchase ON FoundationElectronics.Purchase
   INSTEAD OF DELETE AS
 SET NOCOUNT ON;
@@ -861,19 +855,15 @@ UPDATE FoundationElectronics.Purchase
 GO
 Delete FoundationElectronics.Purchase where EmployeeID = 101
 select * from FoundationElectronics.Purchase where EmployeeID = 101
-
 select *
 from FoundationElectronics.Purchase P
 where P.PurchaseID = 82
-
 --Customer Queries--
 Insert into FoundationElectronics.Customer(CustomerName,CustomerID,Street,City, State)
 Values('Wilbur Robinson',101,'594-8807 Nec, Ave','Athens','Michigan')
-
 UPDATE FoundationElectronics.Customer
 SET Street = '596-8807 Nec, Ave'
 WHERE CustomerId = 101;
-
 CREATE OR ALTER TRIGGER SoftDelete_Customer ON FoundationElectronics.Customer
   INSTEAD OF DELETE AS
 SET NOCOUNT ON;
@@ -883,18 +873,14 @@ UPDATE FoundationElectronics.Customer
 GO
 Delete FoundationElectronics.Customer where CustomerID = 101
 select * from FoundationElectronics.Customer where CustomerID = 101
-
 select *
 from FoundationElectronics.Customer C
 where C.CustomerName = 'Steven Pope' 
-
 --Order Itemized Queries--
 Insert into FoundationElectronics.OrderItemized(OrderItemID,Quantity,ItemCost,SupplierID)
 Values(101,5,'$8.62',3)
-
 UPDATE FoundationElectronics.OrderItemized
 SET Quantity = 2
 WHERE OrderItemID = 101;
-
 Delete FoundationElectronics.OrderItemized where OrderItemID = 101
 select * from FoundationElectronics.OrderItemized where OrderItemID = 101*/
