@@ -9,7 +9,7 @@ location_id = "1"
 active_purchase = None
 
 conn = pyodbc.connect("Driver={SQL Server};"
-                      "Server=DESKTOP-1KGQNNQ;"
+                      "Server=HL-ASTS-ITLT03;"
                       "Database=FoundationElectronicsDatabase;"
                       "Trusted_Connection=yes;")
 
@@ -396,7 +396,7 @@ class CreateOrderMenu(tk.Frame):
         tk.Frame.__init__(self, parent)
         self.controller = controller
 
-        label1 = tk.Label(self, text="CREATE ORDER MENU: Type in product ids and customer id to add to new order")
+        label1 = tk.Label(self, text="CREATE ORDER MENU: Type in employee id and customer id to add to new order")
 
         output = tk.StringVar()
         label2 = tk.Label(self, textvariable=output)
@@ -481,18 +481,18 @@ class UpdateOrderMenu(tk.Frame):
 
         if search == "":
             my_cursor = cursor.execute(
-                "SELECT * FROM FoundationElectronics.OrderItemized WHERE PurchaseID = ?", self.purchase_id
+                "SELECT * FROM FoundationElectronics.OrderItemized WHERE IsDeleted <> 1 AND PurchaseID = ?", self.purchase_id
             )
         else:
             my_cursor = cursor.execute(search, criteria1)
 
         i = 1
         for purchase in my_cursor:
-            for j in range(len(purchase)):
+            for j in range(len(purchase) - 1):
                 e = tk.Label(self.scroll_data, width=15, text=purchase[j], relief='ridge', anchor="w")
                 e.grid(row=i, column=j + 1)
             f = tk.Button(self.scroll_data, width=5, text='Delete', relief='ridge',
-                          anchor="w", command=lambda k=purchase[0]: self.delete_order(k))
+                          anchor="w", command=lambda k=purchase[1]: self.delete_order(k))
             f.grid(row=i, column=7)
             i += 1
 
@@ -500,8 +500,9 @@ class UpdateOrderMenu(tk.Frame):
         self.canvas_frame.config(width=self.scrollbar.winfo_width() + 735, height=500)
         self.canvas.config(scrollregion=self.canvas.bbox("all"))
 
-    def delete_order(self, order_item_id):
-        cursor.execute("DELETE FoundationElectronics.OrderItemized WHERE OrderItemID = ?", order_item_id)
+    def delete_order(self, purchase_id):
+        cursor.execute("UPDATE FoundationElectronics.OrderItemized SET IsDeleted = 1 WHERE OrderItemId = ?", purchase_id)
+        self.display("", "")
 
     def search_orders(self, order_search):
         if order_search != "":
@@ -1009,14 +1010,14 @@ def try_delete_order(order_id):
 
 def try_add_product_to_order(purchase_id, product_name):
     product = get_valid_product(product_name)
-    if product is not "Invalid product name, no item added":
+    if product != "Invalid product name, no item added":
         order_id_raw = cursor.execute("SELECT ISNULL(MAX(OrderItemID), 0) FROM FoundationElectronics.OrderItemized "
                                       "WHERE PurchaseID = ?", purchase_id)
         order_itemized_id = int(order_id_raw.fetchone()[0]) + 1
         price_sold = round(float(product[1][1:]) * (1 + random.uniform(0, 1)), 2)
 
         cursor.execute("INSERT INTO FoundationElectronics.OrderItemized(PurchaseID, OrderItemID, PriceSold, "
-                       "ProductName) VALUES(?,?,?,?)", purchase_id, order_itemized_id, price_sold, product_name)
+                       "ProductName) VALUES(?,?,?,?)", purchase_id, order_itemized_id, "$" + str(price_sold), product_name)
 
         return "Added item " + product_name + " at $" + str(price_sold) + " to order " + \
                str(purchase_id) + " as order line " + str(order_itemized_id)
