@@ -884,3 +884,57 @@ SET Quantity = 2
 WHERE OrderItemID = 101;
 Delete FoundationElectronics.OrderItemized where OrderItemID = 101
 select * from FoundationElectronics.OrderItemized where OrderItemID = 101*/
+
+
+
+/*
+	Single Transaction
+*/
+
+SELECT P.OrderID, P.CustomerID, P.OrderDate,
+ SUM(OI.ItemPrice * OI.Quantity) AS Sales
+ 
+FROM FoundersElectronics.Purchase P
+	INNER JOIN OrderItemized OI ON P.ProductID = OrderItemID
+GROUP BY P.OrderID, P.OrderDate, P.CustomerID
+ORDER BY P.OrderID ASC
+
+/*
+	Location Transaction Query
+*/
+SELECT S.StoreID,
+ COUNT(DISTINCT P.OrderID) AS OrderCount,
+ SUM(OI.ItemPrice * OI.Quantity) AS Sales
+FROM FoundersElectronics.Store S
+	INNER JOIN Employee E ON E.StoreId = S.StoreID
+	INNER JOIN Purchase P ON P.EmployeeID = E.EmployeeID
+	INNER JOIN OrderItemized OI ON P.ProductID = OrderItemID
+GROUP BY S.StoreId, OrderCount, P.CustomerID
+ORDER BY S.StoreId ASC, OrderCount ASC
+	
+	
+/*
+	Customer History Transaction Query
+*/
+
+SELECT C.CustomerID, C.CustomerName,
+   Count(DISTINCT P.OrderID) AS OrderCount,
+   P.OrderDate,
+   SUM(OI.Quantity * OI.ItemPrice) AS CustomersSales
+FROM FoundersElectronics.Customer C
+   INNER JOIN FoundersElectronics.Purchase P ON P.CustomerID = C.CustomerID
+   INNER JOIN FoundersElectronics.OrderItemized OI ON OI.ProductID = P.ProductID
+GROUP BY C.CustomerID, C.CustomerName
+ORDER BY SUM(OI.Quantity * OI.UnitPrice) DESC, C.CustomerID ASC;
+
+/*
+	Supplier Stock Query
+*/
+
+SELECT S.SupplierID, P.ProductID,
+P.ProductName, OI.Itemprice, OI.Quantity
+FROM FoundersElectronics.Supplier S
+	INNER JOIN FoundersElectronics.Product P ON P.SupplierID = S.SupplierID
+	INNER JOIN FoundersElectronics.OrderItemized OI ON OI.ProductID = P.ProductID
+GROUP BY S.SupplierID, P.ProductID
+ORDER BY S.SupplierID ,P.ProductID ASC
