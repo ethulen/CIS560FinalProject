@@ -168,22 +168,22 @@ VALUES
 INSERT INTO FoundationElectronics.Employee(EmployeeName, EmployeeID,StoreID, StartDate)
 VALUES
   ('Jolene England',10000,1,'06-13-20'),
-  ('Cara Villarreal',10001,2,'08-14-20'),
-  ('Erasmus Rosario',10002,3,'06-08-18'),
-  ('Chaim Merrill',10003,4,'12-06-19'),
-  ('Avram Roy',10004,5,'05-21-21'),
-  ('Aidan Murray',10005,6,'01-16-22'),
+  ('Cara Villarreal',10001,1,'08-14-20'),
+  ('Erasmus Rosario',10002,1,'06-08-18'),
+  ('Chaim Merrill',10003,1,'12-06-19'),
+  ('Avram Roy',10004,1,'05-21-21'),
+  ('Aidan Murray',10005,1,'01-16-22'),
   ('Willa Williamson',10006,7,'08-05-21'),
   ('Alan Russo',10007,8,'05-08-19'),
   ('Gloria Stein',10008,9,'06-05-21'),
-  ('Cassady Potter',10009,10,'12-20-19'),
+  ('Cassady Potter',10009,11,'12-20-19'),
   ('Rowan Golden',10010,11,'02-23-22'),
-  ('Melanie Figueroa',10011,12,'11-01-20'),
-  ('Aline Gregory',10012,13,'10-24-18'),
-  ('Jakeem Decker',10013,14,'11-26-18'),
-  ('Walter Padilla',10014,15,'11-19-21'),
-  ('Delilah Velazquez',10015,16,'03-25-19'),
-  ('Burton Morris',10016,17,'01-12-19'),
+  ('Melanie Figueroa',10011,11,'11-01-20'),
+  ('Aline Gregory',10012,11,'10-24-18'),
+  ('Jakeem Decker',10013,11,'11-26-18'),
+  ('Walter Padilla',10014,11,'11-19-21'),
+  ('Delilah Velazquez',10015,11,'03-25-19'),
+  ('Burton Morris',10016,11,'01-12-19'),
   ('Martin Lamb',10017,18,'03-02-21'),
   ('Zorita Humphrey',10018,19,'06-18-21'),
   ('Elmo Mayer',10019,20,'06-08-20'),
@@ -196,18 +196,18 @@ VALUES
   ('John Bentley',10026,27,'09-30-19'),
   ('Gabriel Cohen',10027,28,'09-04-21'),
   ('Eleanor Leblanc',10028,29,'08-25-20'),
-  ('Sheila Barnes',10029,30,'10-01-21'),
+  ('Sheila Barnes',10029,31,'10-01-21'),
   ('Lyle Bryant',10030,31,'06-04-20'),
-  ('Ignatius Marsh',10031,32,'04-07-22'),
-  ('Lydia Wade',10032,33,'06-10-18'),
-  ('Nissim Ayers',10033,34,'12-26-19'),
-  ('Troy Cain',10034,35,'05-31-21'),
-  ('Ila Armstrong',10035,36,'06-06-19'),
-  ('Richard Hendricks',10036,37,'03-02-22'),
-  ('Paloma Tucker',10037,38,'06-16-19'),
-  ('Dorothy Potter',10038,39,'09-19-20'),
-  ('Brenden Mcdonald',10039,40,'04-25-18'),
-  ('Shellie Lyons',10040,41,'05-06-21'),
+  ('Ignatius Marsh',10031,31,'04-07-22'),
+  ('Lydia Wade',10032,31,'06-10-18'),
+  ('Nissim Ayers',10033,31,'12-26-19'),
+  ('Troy Cain',10034,31,'05-31-21'),
+  ('Ila Armstrong',10035,31,'06-06-19'),
+  ('Richard Hendricks',10036,31,'03-02-22'),
+  ('Paloma Tucker',10037,31,'06-16-19'),
+  ('Dorothy Potter',10038,31,'09-19-20'),
+  ('Brenden Mcdonald',10039,31,'04-25-18'),
+  ('Shellie Lyons',10040,31,'05-06-21'),
   ('Deanna Mcclain',10041,42,'01-06-21'),
   ('Aristotle Burris',10042,43,'12-06-18'),
   ('Deacon Estes',10043,44,'01-25-19'),
@@ -219,19 +219,19 @@ VALUES
   ('Hammett Beasley',10049,50,'04-04-20'),
   ('Diana Parks',10050,51,'02-03-21'),
   ('Warren Rivas',10051,52,'07-26-21'),
-  ('Arthur Blake',10052,53,'01-17-21'),
-  ('Shad Huff',10053,54,'03-31-21'),
-  ('Amir Walter',10054,55,'04-25-19'),
-  ('Tucker Cox',10055,56,'06-06-18'),
-  ('Erin Huffman',10056,57,'09-26-20'),
-  ('Sopoline Coleman',10057,58,'04-25-21'),
-  ('Tyler Whitfield',10058,59,'11-23-18'),
-  ('Thomas Delgado',10059,60,'04-07-21'),
-  ('Jaden Woods',10060,61,'02-26-20'),
+  ('Arthur Blake',10052,52,'01-17-21'),
+  ('Shad Huff',10053,52,'03-31-21'),
+  ('Amir Walter',10054,52,'04-25-19'),
+  ('Tucker Cox',10055,52,'06-06-18'),
+  ('Erin Huffman',10056,52,'09-26-20'),
+  ('Sopoline Coleman',10057,52,'04-25-21'),
+  ('Tyler Whitfield',10058,52,'11-23-18'),
+  ('Thomas Delgado',10059,62,'04-07-21'),
+  ('Jaden Woods',10060,62,'02-26-20'),
   ('Orla Huber',10061,62,'07-06-19'),
-  ('Charissa Hooper',10062,63,'07-26-20'),
-  ('Olympia Contreras',10063,64,'02-05-22'),
-  ('Kyle Richard',10064,65,'12-09-21'),
+  ('Charissa Hooper',10062,62,'07-26-20'),
+  ('Olympia Contreras',10063,62,'02-05-22'),
+  ('Kyle Richard',10064,62,'12-09-21'),
   ('Willow Tate',10065,66,'11-18-19'),
   ('Chadwick Bailey',10066,67,'03-12-20'),
   ('Caleb Jackson',10067,68,'02-14-19'),
@@ -890,26 +890,26 @@ select * from FoundationElectronics.OrderItemized where OrderItemID = 101*/
 /*
 	Single Transaction
 */
-
-SELECT P.OrderID, P.CustomerID, P.OrderDate,
- SUM(OI.ItemPrice * OI.Quantity) AS Sales
+/*
+SELECT P.PurchaseID, P.CustomerID, P.OrderDate,
+ SUM(CONVERT(float, SUBSTRING(OI.PriceSold, 2, LEN(OI.PriceSold)))) AS Sales
  
-FROM FoundersElectronics.Purchase P
-	INNER JOIN OrderItemized OI ON P.ProductID = OrderItemID
-GROUP BY P.OrderID, P.OrderDate, P.CustomerID
-ORDER BY P.OrderID ASC
+FROM FoundationElectronics.Purchase P
+	INNER JOIN FoundationElectronics.OrderItemized OI ON P.PurchaseID = OI.PurchaseID
+GROUP BY P.PurchaseID, P.OrderDate, P.CustomerID
+ORDER BY P.PurchaseID ASC
 
 /*
 	Location Transaction Query
 */
 SELECT S.StoreID,
- COUNT(DISTINCT P.OrderID) AS OrderCount,
- SUM(OI.ItemPrice * OI.Quantity) AS Sales
-FROM FoundersElectronics.Store S
-	INNER JOIN Employee E ON E.StoreId = S.StoreID
-	INNER JOIN Purchase P ON P.EmployeeID = E.EmployeeID
-	INNER JOIN OrderItemized OI ON P.ProductID = OrderItemID
-GROUP BY S.StoreId, OrderCount, P.CustomerID
+ COUNT(DISTINCT P.PurchaseID) AS OrderCount,
+ SUM(CONVERT(float, SUBSTRING(OI.PriceSold, 2, LEN(OI.PriceSold)))) AS Sales
+FROM FoundationElectronics.Store S
+	INNER JOIN FoundationElectronics.Employee E ON E.StoreId = S.StoreID
+	INNER JOIN FoundationElectronics.Purchase P ON P.EmployeeID = E.EmployeeID
+	INNER JOIN FoundationElectronics.OrderItemized OI ON P.PurchaseID = OrderItemID
+GROUP BY S.StoreId
 ORDER BY S.StoreId ASC, OrderCount ASC
 	
 	
@@ -918,23 +918,20 @@ ORDER BY S.StoreId ASC, OrderCount ASC
 */
 
 SELECT C.CustomerID, C.CustomerName,
-   Count(DISTINCT P.OrderID) AS OrderCount,
-   P.OrderDate,
-   SUM(OI.Quantity * OI.ItemPrice) AS CustomersSales
-FROM FoundersElectronics.Customer C
-   INNER JOIN FoundersElectronics.Purchase P ON P.CustomerID = C.CustomerID
-   INNER JOIN FoundersElectronics.OrderItemized OI ON OI.ProductID = P.ProductID
-GROUP BY C.CustomerID, C.CustomerName
-ORDER BY SUM(OI.Quantity * OI.UnitPrice) DESC, C.CustomerID ASC;
+   SUM(CONVERT(float, SUBSTRING(OI.PriceSold, 2, LEN(OI.PriceSold)))) AS Sales
+FROM FoundationElectronics.Customer C
+   INNER JOIN FoundationElectronics.Purchase P ON P.CustomerID = C.CustomerID
+   INNER JOIN FoundationElectronics.OrderItemized OI ON OI.PurchaseID = P.PurchaseID
+GROUP BY C.CustomerID, C.CustomerName, P.OrderDate
+ORDER BY SUM(CONVERT(float, SUBSTRING(OI.PriceSold, 2, LEN(OI.PriceSold)))) DESC, C.CustomerID ASC;
 
 /*
 	Supplier Stock Query
 */
 
-SELECT S.SupplierID, P.ProductID,
-P.ProductName, OI.Itemprice, OI.Quantity
-FROM FoundersElectronics.Supplier S
-	INNER JOIN FoundersElectronics.Product P ON P.SupplierID = S.SupplierID
-	INNER JOIN FoundersElectronics.OrderItemized OI ON OI.ProductID = P.ProductID
-GROUP BY S.SupplierID, P.ProductID
-ORDER BY S.SupplierID ,P.ProductID ASC
+SELECT S.SupplierID, P.ProductName, OI.PriceSold
+FROM FoundationElectronics.Supplier S
+	INNER JOIN FoundationElectronics.Product P ON P.SupplierID = S.SupplierID
+	INNER JOIN FoundationElectronics.OrderItemized OI ON OI.ProductName = P.ProductName
+GROUP BY S.SupplierID, P.ProductName, OI.PriceSold
+ORDER BY S.SupplierID ,P.ProductName ASC*/
