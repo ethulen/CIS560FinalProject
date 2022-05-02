@@ -1,5 +1,3 @@
-from datetime import datetime
-
 import pyodbc
 import random
 import tkinter as tk
@@ -13,7 +11,7 @@ active_purchase = None
 active_product = None
 
 conn = pyodbc.connect("Driver={SQL Server};"
-                      "Server=ETHAN-PC;"
+                      "Server=DESKTOP-NOPHHB5;"
                       "Database=FoundationElectronicsDatabase;"
                       "Trusted_Connection=yes;")
 
@@ -75,7 +73,8 @@ class MenuGUI(tk.Tk):
                 CreateOrderMenu, UpdateOrderMenu, CustomerFunctionsMenu, FindCustomerMenu,
                 CreateCustomerMenu, UpdateCustomerMenu, EmployeeFunctionsMenu, FindEmployeeMenu,
                 CreateEmployeeMenu, UpdateEmployeeMenu, InventoryFunctionsMenu, FindProductMenu,
-                CreateProductMenu, UpdateProductMenu
+                CreateProductMenu, UpdateProductMenu, ReportsMenu, PurchaseTotalsMenu, LocationTotalsMenu,
+                CustomerTotalsMenu, ProductPriceSoldMenu
         ):
             page_name = frame.__name__
             frame = frame(parent=container, controller=self)
@@ -117,7 +116,9 @@ class MainMenu(tk.Frame):
                             command=lambda: controller.show_frame("InventoryFunctionsMenu"))
         button5 = tk.Button(self, text="System Settings",
                             command=lambda: controller.show_frame("SystemSettingsMenu"))
-        button6 = tk.Button(self, text="Exit",
+        button6 = tk.Button(self, text="Reports",
+                            command=lambda: controller.show_frame("ReportsMenu"))
+        button7 = tk.Button(self, text="Exit",
                             command=lambda: controller.destroy())
 
         label1.pack()
@@ -128,9 +129,37 @@ class MainMenu(tk.Frame):
         button4.pack()
         button5.pack()
         button6.pack()
+        button7.pack()
 
     def on_show_frame(self, event):
         self.string_var.set("STORE LOCATION: " + location)
+
+
+class ReportsMenu(tk.Frame):
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+
+        label1 = tk.Label(self, text="REPORTS MENU: Select a report to run")
+
+        button1 = tk.Button(self, text="Purchase Totals",
+                            command=lambda: controller.show_frame("PurchaseTotalsMenu"))
+        button2 = tk.Button(self, text="Location Totals",
+                            command=lambda: controller.show_frame("LocationTotalsMenu"))
+        button3 = tk.Button(self, text="Customer Totals",
+                            command=lambda: controller.show_frame("CustomerTotalsMenu"))
+        button4 = tk.Button(self, text="Product Price Sold",
+                            command=lambda: controller.show_frame("ProductPriceSoldMenu"))
+        button5 = tk.Button(self, text="Back",
+                            command=lambda: controller.show_frame("MainMenu"))
+
+        label1.pack()
+        button1.pack()
+        button2.pack()
+        button3.pack()
+        button4.pack()
+        button5.pack()
 
 
 class SystemSettingsMenu(tk.Frame):
@@ -309,6 +338,270 @@ class ChangeStoreLocationMenu(tk.Frame):
 
     def on_show_frame(self, event):
         self.display("", "")
+
+
+class PurchaseTotalsMenu(tk.Frame):
+    scroll_data = None
+    canvas_frame = None
+    scrollbar = None
+    canvas = None
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.bind("<<ShowFrame>>", self.on_show_frame)
+
+        label1 = tk.Label(self, text="PURCHASE TOTALS MENU: View purchase totals")
+        button1 = tk.Button(self, text="Back", command=lambda: controller.show_frame("ReportsMenu"))
+
+        label1.grid(row=0, column=0, pady=(7, 0), sticky='nw')
+        button1.grid(row=3, column=0, pady=7, sticky='nw')
+
+        self.canvas_frame = tk.Frame(self)
+        self.canvas_frame.grid(row=2, column=0, sticky='nw', pady=(7, 0))
+        self.canvas_frame.grid_columnconfigure(0, weight=1)
+        self.canvas_frame.grid_rowconfigure(0, weight=1)
+        self.canvas_frame.grid_propagate(False)
+
+        self.canvas = tk.Canvas(self.canvas_frame)
+        self.canvas.grid(row=0, column=0, sticky="news")
+
+        self.scrollbar = tk.Scrollbar(self.canvas_frame, command=self.canvas.yview, orient="vertical")
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scroll_data = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.scroll_data, anchor='nw')
+
+    def display(self):
+        for widget in self.scroll_data.winfo_children():
+            widget.destroy()
+
+        storeID_label = tk.Label(self.scroll_data, width=15, text="Purchase ID")
+        storeID_label.grid(row=0, column=1)
+        city_label = tk.Label(self.scroll_data, width=15, text="Customer ID")
+        city_label.grid(row=0, column=2)
+        state_label = tk.Label(self.scroll_data, width=15, text="Order Date")
+        state_label.grid(row=0, column=3)
+        sale_label = tk.Label(self.scroll_data, width=15, text="Sales")
+        sale_label.grid(row=0, column=4)
+
+        my_cursor = cursor.execute("SELECT P.PurchaseID, P.CustomerID, P.OrderDate, SUM(CONVERT(float, SUBSTRING("
+                                   "OI.PriceSold, 2, LEN(OI.PriceSold)))) AS Sales FROM "
+                                   "FoundationElectronics.Purchase P INNER JOIN FoundationElectronics.OrderItemized "
+                                   "OI ON P.PurchaseID = OI.PurchaseID GROUP BY P.PurchaseID, P.OrderDate, "
+                                   "P.CustomerID ORDER BY P.PurchaseID ASC")
+
+        i = 1
+        for store in my_cursor:
+            for j in range(len(store)):
+                e = tk.Label(self.scroll_data, width=15, text=store[j], relief='ridge', anchor="w")
+                e.grid(row=i, column=j + 1)
+            i += 1
+
+            self.scroll_data.update_idletasks()
+            self.canvas_frame.config(width=self.scrollbar.winfo_width() + 735, height=500)
+            self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+    def on_show_frame(self, event):
+        self.display()
+
+
+class LocationTotalsMenu(tk.Frame):
+    scroll_data = None
+    canvas_frame = None
+    scrollbar = None
+    canvas = None
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.bind("<<ShowFrame>>", self.on_show_frame)
+
+        label1 = tk.Label(self, text="LOCATIONS TOTALS MENU: View location totals")
+        button1 = tk.Button(self, text="Back", command=lambda: controller.show_frame("ReportsMenu"))
+
+        label1.grid(row=0, column=0, pady=(7, 0), sticky='nw')
+        button1.grid(row=3, column=0, pady=7, sticky='nw')
+
+        self.canvas_frame = tk.Frame(self)
+        self.canvas_frame.grid(row=2, column=0, sticky='nw', pady=(7, 0))
+        self.canvas_frame.grid_columnconfigure(0, weight=1)
+        self.canvas_frame.grid_rowconfigure(0, weight=1)
+        self.canvas_frame.grid_propagate(False)
+
+        self.canvas = tk.Canvas(self.canvas_frame)
+        self.canvas.grid(row=0, column=0, sticky="news")
+
+        self.scrollbar = tk.Scrollbar(self.canvas_frame, command=self.canvas.yview, orient="vertical")
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scroll_data = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.scroll_data, anchor='nw')
+
+    def display(self):
+        for widget in self.scroll_data.winfo_children():
+            widget.destroy()
+
+        storeID_label = tk.Label(self.scroll_data, width=15, text="Store ID")
+        storeID_label.grid(row=0, column=1)
+        city_label = tk.Label(self.scroll_data, width=15, text="Order Count")
+        city_label.grid(row=0, column=2)
+        state_label = tk.Label(self.scroll_data, width=15, text="Sales")
+        state_label.grid(row=0, column=3)
+
+        my_cursor = cursor.execute("SELECT S.StoreID, COUNT(DISTINCT P.PurchaseID) AS OrderCount, SUM(CONVERT(float, "
+                                   "SUBSTRING(OI.PriceSold, 2, LEN(OI.PriceSold)))) AS Sales FROM "
+                                   "FoundationElectronics.Store S INNER JOIN FoundationElectronics.Employee E ON "
+                                   "E.StoreId = S.StoreID INNER JOIN FoundationElectronics.Purchase P ON P.EmployeeID "
+                                   "= E.EmployeeID INNER JOIN FoundationElectronics.OrderItemized OI ON P.PurchaseID "
+                                   "= OrderItemID GROUP BY S.StoreId ORDER BY S.StoreId ASC, OrderCount ASC")
+
+        i = 1
+        for store in my_cursor:
+            for j in range(len(store)):
+                e = tk.Label(self.scroll_data, width=15, text=store[j], relief='ridge', anchor="w")
+                e.grid(row=i, column=j + 1)
+            i += 1
+
+            self.scroll_data.update_idletasks()
+            self.canvas_frame.config(width=self.scrollbar.winfo_width() + 735, height=500)
+            self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+    def on_show_frame(self, event):
+        self.display()
+
+
+class CustomerTotalsMenu(tk.Frame):
+    scroll_data = None
+    canvas_frame = None
+    scrollbar = None
+    canvas = None
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.bind("<<ShowFrame>>", self.on_show_frame)
+
+        label1 = tk.Label(self, text="CUSTOMER TOTALS MENU: View customer totals")
+        button1 = tk.Button(self, text="Back", command=lambda: controller.show_frame("ReportsMenu"))
+
+        label1.grid(row=0, column=0, pady=(7, 0), sticky='nw')
+        button1.grid(row=3, column=0, pady=7, sticky='nw')
+
+        self.canvas_frame = tk.Frame(self)
+        self.canvas_frame.grid(row=2, column=0, sticky='nw', pady=(7, 0))
+        self.canvas_frame.grid_columnconfigure(0, weight=1)
+        self.canvas_frame.grid_rowconfigure(0, weight=1)
+        self.canvas_frame.grid_propagate(False)
+
+        self.canvas = tk.Canvas(self.canvas_frame)
+        self.canvas.grid(row=0, column=0, sticky="news")
+
+        self.scrollbar = tk.Scrollbar(self.canvas_frame, command=self.canvas.yview, orient="vertical")
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scroll_data = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.scroll_data, anchor='nw')
+
+    def display(self):
+        for widget in self.scroll_data.winfo_children():
+            widget.destroy()
+
+        storeID_label = tk.Label(self.scroll_data, width=15, text="Customer ID")
+        storeID_label.grid(row=0, column=1)
+        city_label = tk.Label(self.scroll_data, width=15, text="Customer Name")
+        city_label.grid(row=0, column=2)
+        state_label = tk.Label(self.scroll_data, width=15, text="Sales")
+        state_label.grid(row=0, column=3)
+
+        my_cursor = cursor.execute("SELECT C.CustomerID, C.CustomerName, SUM(CONVERT(float, SUBSTRING(OI.PriceSold, "
+                                   "2, LEN(OI.PriceSold)))) AS Sales FROM FoundationElectronics.Customer C INNER JOIN "
+                                   "FoundationElectronics.Purchase P ON P.CustomerID = C.CustomerID INNER JOIN "
+                                   "FoundationElectronics.OrderItemized OI ON OI.PurchaseID = P.PurchaseID GROUP BY "
+                                   "C.CustomerID, C.CustomerName, P.OrderDate ORDER BY SUM(CONVERT(float, "
+                                   "SUBSTRING(OI.PriceSold, 2, LEN(OI.PriceSold)))) DESC, C.CustomerID ASC")
+
+        i = 1
+        for store in my_cursor:
+            for j in range(len(store)):
+                e = tk.Label(self.scroll_data, width=15, text=store[j], relief='ridge', anchor="w")
+                e.grid(row=i, column=j + 1)
+            i += 1
+
+            self.scroll_data.update_idletasks()
+            self.canvas_frame.config(width=self.scrollbar.winfo_width() + 735, height=500)
+            self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+    def on_show_frame(self, event):
+        self.display()
+
+
+class ProductPriceSoldMenu(tk.Frame):
+    scroll_data = None
+    canvas_frame = None
+    scrollbar = None
+    canvas = None
+
+    def __init__(self, parent, controller):
+        tk.Frame.__init__(self, parent)
+        self.controller = controller
+        self.bind("<<ShowFrame>>", self.on_show_frame)
+
+        label1 = tk.Label(self, text="PRODUCT PRICE SOLD MENU: View how much products sell for")
+        button1 = tk.Button(self, text="Back", command=lambda: controller.show_frame("ReportsMenu"))
+
+        label1.grid(row=0, column=0, pady=(7, 0), sticky='nw')
+        button1.grid(row=3, column=0, pady=7, sticky='nw')
+
+        self.canvas_frame = tk.Frame(self)
+        self.canvas_frame.grid(row=2, column=0, sticky='nw', pady=(7, 0))
+        self.canvas_frame.grid_columnconfigure(0, weight=1)
+        self.canvas_frame.grid_rowconfigure(0, weight=1)
+        self.canvas_frame.grid_propagate(False)
+
+        self.canvas = tk.Canvas(self.canvas_frame)
+        self.canvas.grid(row=0, column=0, sticky="news")
+
+        self.scrollbar = tk.Scrollbar(self.canvas_frame, command=self.canvas.yview, orient="vertical")
+        self.scrollbar.grid(row=0, column=1, sticky='ns')
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+
+        self.scroll_data = tk.Frame(self.canvas)
+        self.canvas.create_window((0, 0), window=self.scroll_data, anchor='nw')
+
+    def display(self):
+        for widget in self.scroll_data.winfo_children():
+            widget.destroy()
+
+        storeID_label = tk.Label(self.scroll_data, width=15, text="Supplier ID")
+        storeID_label.grid(row=0, column=1)
+        city_label = tk.Label(self.scroll_data, width=15, text="Product Name")
+        city_label.grid(row=0, column=2)
+        state_label = tk.Label(self.scroll_data, width=15, text="Price Sold")
+        state_label.grid(row=0, column=3)
+
+        my_cursor = cursor.execute("SELECT S.SupplierID, P.ProductName, OI.PriceSold FROM "
+                                   "FoundationElectronics.Supplier S INNER JOIN FoundationElectronics.Product P ON "
+                                   "P.SupplierID = S.SupplierID INNER JOIN FoundationElectronics.OrderItemized OI ON "
+                                   "OI.ProductName = P.ProductName GROUP BY S.SupplierID, P.ProductName, OI.PriceSold "
+                                   "ORDER BY S.SupplierID ,P.ProductName ASC")
+
+        i = 1
+        for store in my_cursor:
+            for j in range(len(store)):
+                e = tk.Label(self.scroll_data, width=15, text=store[j], relief='ridge', anchor="w")
+                e.grid(row=i, column=j + 1)
+            i += 1
+
+            self.scroll_data.update_idletasks()
+            self.canvas_frame.config(width=self.scrollbar.winfo_width() + 735, height=500)
+            self.canvas.config(scrollregion=self.canvas.bbox("all"))
+
+    def on_show_frame(self, event):
+        self.display()
 
 
 class FindOrderMenu(tk.Frame):
